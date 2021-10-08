@@ -1,7 +1,6 @@
 public class Usuario {
     
     private String nome;
-    private String sobrenome;
     private String matricula;
     private boolean adm;
     private String departamento;
@@ -10,7 +9,6 @@ public class Usuario {
 
     public Usuario(String nome, String sobrenome, String matricula, boolean adm, String departamento) {
         this.nome = nome;
-        this.sobrenome = sobrenome;
         this.matricula = matricula;
         this.adm = adm;
         this.departamento = departamento;

@@ -15,7 +15,7 @@ public class Menu{
     public static Usuario Menu(Usuario usuarioLogado, ListaUsuarios users, boolean sair){
         Scanner in = new Scanner(System.in);
         String opcao = "";
-        System.out.println("Operador do sistema: "+ usuarioLogado.getNome());
+        System.out.println("\nOperador do sistema: "+ usuarioLogado.getNome());
         System.out.println("Iniciais: "+ usuarioLogado.getInicialNome() + ". " + usuarioLogado.getInicialSobrenome() + ".");
         System.out.println();
         System.out.println();
@@ -25,6 +25,7 @@ public class Menu{
         System.out.println("3 - Buscar pedido");
         System.out.println("4 - Painel Admistrador");
         System.out.println("9 - Sair"); 
+        System.out.print("Opcao: ");
         opcao = in.nextLine();
         switch(opcao)
         {
@@ -38,16 +39,18 @@ public class Menu{
             }
             default:
             {
-                System.out.println("Opcao invalida");
+                System.out.println("Opcao invalida\n");
+                break;
             }
         }
-        return null;
+        return usuarioLogado;
     }
 
     public static Usuario Login(ListaUsuarios users, Usuario usuarioLogado)
     {
         Scanner in = new Scanner(System.in);
         System.out.println("Insira sua matricula para entrar no sistema: ");
+        System.out.print("Matricula: ");
         String matricula = in.nextLine();
         
         return users.buscaPorMatricula(matricula);
