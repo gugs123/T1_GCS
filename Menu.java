@@ -1,20 +1,56 @@
 import java.util.Scanner;
 
-public class menu{
+public class Menu{
     public static void main (String[] args){
-    Menu();   
+        ListaUsuarios users = new ListaUsuarios();
+        boolean sair = false;
+        Usuario usuarioLogado = null;
+        users.preencheUsuarios();
+        usuarioLogado = Login(users, usuarioLogado);
+        do{
+            usuarioLogado = Menu(usuarioLogado, users, sair);
+        }while(true);
     }
     
-    public static void Menu(){
-        Scanner opcao = new Scanner(System.in);
-        int resultado_opcao_menu;
+    public static Usuario Menu(Usuario usuarioLogado, ListaUsuarios users, boolean sair){
+        Scanner in = new Scanner(System.in);
+        String opcao = "";
+        System.out.println("Operador do sistema: "+ usuarioLogado.getNome());
+        System.out.println("Iniciais: "+ usuarioLogado.getInicialNome() + ". " + usuarioLogado.getInicialSobrenome() + ".");
+        System.out.println();
+        System.out.println();
+        System.out.println("*STANLEY* - Sistema de Controle de Aquisição");
+        System.out.println("1 - Alterar usuario");
+        System.out.println("2 - Criar um pedido");
+        System.out.println("3 - Buscar pedido");
+        System.out.println("4 - Painel Admistrador");
+        System.out.println("9 - Sair"); 
+        opcao = in.nextLine();
+        switch(opcao)
+        {
+            case "1":
+            {
+                return usuarioLogado = Login(users, usuarioLogado);
+            }
+            case "9":
+            {
+                System.exit(0);
+            }
+            default:
+            {
+                System.out.println("Opcao invalida");
+            }
+        }
+        return null;
+    }
+
+    public static Usuario Login(ListaUsuarios users, Usuario usuarioLogado)
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Insira sua matricula para entrar no sistema: ");
+        String matricula = in.nextLine();
         
-        System.out.println("*STANLEY* - Sistema de Controle de Aquisição\n 1 - Entrar ou Alterar usuario\n 2 - Criar um pedido\n 3 - Buscar pedido\n 4 - Painel Admistrador\n 9 - Sair");
-        resultado_opcao_menu = opcao.nextInt();
-        if(resultado_opcao_menu == 1){
-           // login();
-        }
-        else if(resultado_opcao_menu == 2){
-            System.exit(0);
-        }
-    }}
+        return users.buscaPorMatricula(matricula);
+        
+    }
+}
