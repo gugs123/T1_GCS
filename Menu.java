@@ -2,17 +2,16 @@ import java.util.Scanner;
 
 public class Menu{
     public static void main (String[] args){
-        ListaUsuarios users = new ListaUsuarios();
+        ListaDepartUsua auxLista = new ListaDepartUsua();
         boolean sair = false;
         Usuario usuarioLogado = null;
-        users.preencheUsuarios();
-        usuarioLogado = Login(users, usuarioLogado);
+        usuarioLogado = Login(auxLista, usuarioLogado);
         do{
-            usuarioLogado = Menu(usuarioLogado, users, sair);
+            usuarioLogado = Menu(usuarioLogado, auxLista, sair);
         }while(true);
     }
     
-    public static Usuario Menu(Usuario usuarioLogado, ListaUsuarios users, boolean sair){
+    public static Usuario Menu(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean sair){
         Scanner in = new Scanner(System.in);
         String opcao = "";
         System.out.println("\nOperador do sistema: "+ usuarioLogado.getNome());
@@ -31,7 +30,7 @@ public class Menu{
         {
             case "1":
             {
-                return usuarioLogado = Login(users, usuarioLogado);
+                return usuarioLogado = Login(auxLista, usuarioLogado);
             }
             case "9":
             {
@@ -46,7 +45,7 @@ public class Menu{
         return usuarioLogado;
     }
 
-    public static Usuario Login(ListaUsuarios users, Usuario usuarioLogado)
+    public static Usuario Login(ListaDepartUsua users, Usuario usuarioLogado)
     {
         Scanner in = new Scanner(System.in);
         System.out.println("Insira sua matricula para entrar no sistema: ");

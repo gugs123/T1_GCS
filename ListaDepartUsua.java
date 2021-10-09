@@ -1,9 +1,21 @@
 import java.util.ArrayList;
 
-public class ListaUsuarios {
-    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+public class ListaDepartUsua {
 
-    public void preencheUsuarios(){
+    private ArrayList<Departamento> listaDepartamentos;
+    private ArrayList<Usuario> listaUsuarios;
+
+    public ListaDepartUsua() {
+        this.listaUsuarios = new ArrayList<>(15);
+        preencheUsuarios();
+
+        this.listaDepartamentos = new ArrayList<>();
+        preencheDepartamentos();
+    }
+
+    //Serve para iniciar os usuarios
+    private void preencheUsuarios(){
+
         Usuario user0 = new Usuario("Gustavo", "Melo", "0", true, "RH");
         listaUsuarios.add(user0);
         Usuario user1 = new Usuario("Mateus", "Souza", "1", false, "Producao");
@@ -36,35 +48,51 @@ public class ListaUsuarios {
         listaUsuarios.add(user14);
     }
 
+    //Serve para iniciar os departamentos
+    private void preencheDepartamentos() {
 
-    public void getUsuarios(){
-        int qtd_users = listaUsuarios.size();
-        Usuario user = null;
-        for(int i = 0; i < qtd_users;i++){
-            user = listaUsuarios.get(i);
-            
-        }
+        Departamento depart1 = new Departamento("RH",5600.50);
+        depart1.preencheListaUsuarios(this.listaUsuarios);
+        this.listaDepartamentos.add(depart1);
+
+        Departamento depart2 = new Departamento("Producao",7800.00);
+        depart2.preencheListaUsuarios(this.listaUsuarios);
+        this.listaDepartamentos.add(depart2);
+
+        Departamento depart3 = new Departamento("TI",12100.75);
+        depart3.preencheListaUsuarios(this.listaUsuarios);
+        this.listaDepartamentos.add(depart3);
+
+        Departamento depart4 = new Departamento("Manutencao",6950.20);
+        depart4.preencheListaUsuarios(this.listaUsuarios);
+        this.listaDepartamentos.add(depart4);
+
+        Departamento depart5 = new Departamento("Engenharia", 10950.00);
+        depart5.preencheListaUsuarios(this.listaUsuarios);
+        this.listaDepartamentos.add(depart5);
     }
 
-    public Usuario buscaPorMatricula(String matricula)
-    {
+    //Serve para realizar uma busca atraves da variavel matricula
+    public Usuario buscaPorMatricula(String matricula) {
+
         int qtd_users = listaUsuarios.size();
         Usuario user = null;
         for(int i = 0; i < qtd_users; i++){
             user = listaUsuarios.get(i);
             if(user.getMatricula().equals(matricula))
             {
-                System.out.println(user.toString());
+                System.out.println(user);
                 return user;
             }
         }
         return null;
     }
 
-    //Adcionada visando funcao em departamento
     public ArrayList<Usuario> getListaUsuarios() {
         return this.listaUsuarios;
     }
-}
 
-    
+    public ArrayList<Departamento> getListaDepartamentos() {
+        return this.listaDepartamentos;
+    }
+}
