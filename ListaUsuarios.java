@@ -60,6 +60,11 @@ public class ListaUsuarios {
         }
         return null;
     }
+
+    //Adcionada visando funcao em departamento
+    public ArrayList<Usuario> getListaUsuarios() {
+        return this.listaUsuarios;
+    }
 }
 
     
