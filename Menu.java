@@ -14,6 +14,7 @@ public class Menu{
     public static Usuario Menu(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean sair){
         Scanner in = new Scanner(System.in);
         String opcao = "";
+        LimpaTela();
         System.out.println("\nOperador do sistema: "+ usuarioLogado.getNome());
         System.out.println("Iniciais: "+ usuarioLogado.getInicialNome() + ". " + usuarioLogado.getInicialSobrenome() + ".");
         System.out.println();
@@ -47,6 +48,7 @@ public class Menu{
 
     public static Usuario Login(ListaDepartUsua users, Usuario usuarioLogado)
     {
+        LimpaTela();
         Scanner in = new Scanner(System.in);
         System.out.println("Insira sua matricula para entrar no sistema: ");
         System.out.print("Matricula: ");
@@ -54,5 +56,10 @@ public class Menu{
         
         return users.buscaPorMatricula(matricula);
         
+    }
+
+    public static void LimpaTela(){
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 }
