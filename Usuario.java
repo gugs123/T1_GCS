@@ -51,6 +51,11 @@ public class Usuario {
         this.inicialSobrenome = inicialSobrenome;
     }
 
+    //Adciona visto ser necessario paro o departamento
+    public String getDepartamento() {
+        return this.departamento;
+    }
+
     @Override
     public String toString() {
         return "Usuario [adm=" + adm + ", nome=" + nome + ", matricula=" + matricula + ", Departamento= " + departamento + "]";

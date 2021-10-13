@@ -2,7 +2,7 @@
 
 public class App{
     public static void main(String[] args){
-        ListaUsuarios usuarios = new ListaUsuarios();
+        ListaDepartUsua auxLista = new ListaDepartUsua();
         /*usuarios.preencheUsuarios();
         usuarios.getUsuarios();*/
     }
