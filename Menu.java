@@ -5,7 +5,7 @@ public class Menu{
         ListaDepartUsua auxLista = new ListaDepartUsua();
         boolean sair = false;
         Usuario usuarioLogado = null;
-        usuarioLogado = Login(auxLista, usuarioLogado);
+        usuarioLogado = Login(auxLista);
         do{
             usuarioLogado = Menu(usuarioLogado, auxLista, sair);
         }while(true);
@@ -30,7 +30,7 @@ public class Menu{
         {
             case "1":
             {
-                return usuarioLogado = Login(auxLista, usuarioLogado);
+                return usuarioLogado = Login(auxLista);
             }
             case "4":
             {
@@ -64,14 +64,19 @@ public class Menu{
         return usuarioLogado;
     }
 
-    public static Usuario Login(ListaDepartUsua users, Usuario usuarioLogado)
+    public static Usuario Login(ListaDepartUsua users)
     {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Insira sua matricula para entrar no sistema: ");
-        System.out.print("Matricula: ");
-        String matricula = in.nextLine();
+        Usuario logado = null;
+        do{   
+            
+            Scanner in = new Scanner(System.in);
+            System.out.println("Insira sua matricula para entrar no sistema: ");
+            System.out.print("Matricula: ");
+            String matricula = in.nextLine();
+            logado = users.buscaPorMatricula(matricula);
+        }while(logado == null);
+        return logado;
         
-        return users.buscaPorMatricula(matricula);
         
     }
 
@@ -89,41 +94,42 @@ public class Menu{
 
     public static void menuADM()
         {
-        boolean sair = false;
-        while(sair==false){
-            System.out.println("Menu Admimistrador");
-            System.out.println("1- Avaliar pedido em aberto");
-            System.out.println("2- Estatistica de pedidos totais");
-            System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
-            System.out.println("4- Valor total de cada categoria dos ultimos 30 dias");            
-            System.out.println("5- Detalhes do pedido de maior valor ainda em aberto");            
-            System.out.println("6- Sair do menu ADM");            
-            System.out.println("Opcao: ");
-            Scanner in = new Scanner(System.in);
-            String opcao = in.nextLine();
-            switch(opcao)
+            boolean sair = false;
+            while(sair==false)
             {
-                case "1":
-                //TODO
-                break;
-                case "2":
-                //TODO
-                break;
-                case "3":
-                //TODO
-                break;
-                case "4":
-                //TODO
-                break;
-                case "5":
-                //TODO
-                break;
-                case "6":
-                sair = true;
-                break;
-                default:
-                System.out.println("Opcao invalida");
+                System.out.println("Menu Admimistrador");
+                System.out.println("1- Avaliar pedido em aberto");
+                System.out.println("2- Estatistica de pedidos totais");
+                System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
+                System.out.println("4- Valor total de cada categoria dos ultimos 30 dias");            
+                System.out.println("5- Detalhes do pedido de maior valor ainda em aberto");            
+                System.out.println("6- Sair do menu ADM");            
+                System.out.print("Opcao: ");
+                Scanner in = new Scanner(System.in);
+                String opcao = in.nextLine();
+                switch(opcao)
+                {
+                    case "1":
+                    //TODO
+                    break;
+                    case "2":
+                    //TODO
+                    break;
+                    case "3":
+                    //TODO
+                    break;
+                    case "4":
+                    //TODO
+                    break;
+                    case "5":
+                    //TODO
+                    break;
+                    case "6":
+                    sair = true;
+                    break;
+                    default:
+                    System.out.println("Opcao invalida");
+                }
             }
-        }
         }
 }
