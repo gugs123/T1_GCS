@@ -81,7 +81,6 @@ public class ListaDepartUsua {
             user = listaUsuarios.get(i);
             if(user.getMatricula().equals(matricula))
             {
-                System.out.println(user);
                 return user;
             }
         }
@@ -94,5 +93,22 @@ public class ListaDepartUsua {
 
     public ArrayList<Departamento> getListaDepartamentos() {
         return this.listaDepartamentos;
+    }
+
+    //Serve para buscar um Departamento(classe) pelo nome dele
+    public Departamento buscaPorDepartamento(String nomeDepartamento) {
+
+        int qtd_users = listaDepartamentos.size();
+        Departamento auxDepart = null;
+        for(int i = 0; i < qtd_users; i++){
+            auxDepart = listaDepartamentos.get(i);
+            if(auxDepart.getNomeDepartamento().equals(nomeDepartamento))
+            {
+                return auxDepart;
+            }
+        }
+
+        //Se nao tiver um departamento com o nome passado
+        return null;
     }
 }

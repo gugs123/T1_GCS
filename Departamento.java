@@ -84,4 +84,8 @@ public class Departamento {
     public ArrayList<Usuario> getListaDeUsuarios() {
         return this.listaDeUsuarios;
     }
+
+    public String getNomeDepartamento() {
+        return this.nomeDepartamento;
+    }
 }
