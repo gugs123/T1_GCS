@@ -3,22 +3,29 @@ import java.util.ArrayList;
 public class PedidoAquisicao {
     private Usuario usuarioSolicitante;
 
+    private static int cont = 0;
     private Departamento departamentoSolicitante;
     private String dataDoPedido;
     private String dataDeConclusao;
-    private String statusDoPedido;
+    private int statusDoPedido;
+    private int idPedido;
+    // status 0 = reprovado
+    // status 1 = aberto
+    // status 2 = aprovado
+    // status 3 = concluído
     private ArrayList<Item> listaItens;
     private int valorTotalPedido;
 
     public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, String dataDoPedido, String
-            dataDeConclusao, String statusDoPedido, ArrayList<Item> listaItens, int valorTotalPedido) {
+            dataDeConclusao, int statusDoPedido, ArrayList<Item> listaItens, int valorTotalPedido) {
         this.usuarioSolicitante = usuarioSolicitante;
         this.departamentoSolicitante = departamentoSolicitante;
         this.dataDoPedido = dataDoPedido;
         this.dataDeConclusao = dataDeConclusao;
-        this.statusDoPedido = statusDoPedido;
+        this.statusDoPedido = 1;
         this.listaItens = listaItens;
         this.valorTotalPedido = calculaValorTotalDePedido();
+        this.idPedido = cont;
     }
 
     public Usuario getUsuarioSolicitante() {
@@ -37,7 +44,7 @@ public class PedidoAquisicao {
         return dataDeConclusao;
     }
 
-    public String getStatusDoPedido() {
+    public int getStatusDoPedido() {
         return statusDoPedido;
     }
 
@@ -61,7 +68,7 @@ public class PedidoAquisicao {
         this.dataDeConclusao = dataDeConclusao;
     }
 
-    public void setStatusDoPedido(String statusDoPedido) {
+    public void setStatusDoPedido(int statusDoPedido) {
         this.statusDoPedido = statusDoPedido;
     }
 
