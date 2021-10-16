@@ -21,6 +21,10 @@ public class Departamento {
         }
     }
 
+    public double getValorLimitePedido() {
+        return valorLimitePedido;
+    }
+
     //Para setar um no valor limite
     public boolean setValorLimitePedido(double valor) {
         if (valor < 1000) {

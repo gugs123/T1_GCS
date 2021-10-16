@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu{
@@ -31,6 +32,12 @@ public class Menu{
             case "1":
             {
                 return usuarioLogado = Login(auxLista);
+            }
+            case "2":
+            {
+                //Pega um departamento a partir de uma String(nome do departamento) de um usuário
+                Departamento departamentoUsu = auxLista.buscaPorDepartamento(usuarioLogado.getDepartamento());
+                return criarPedido(usuarioLogado, in, departamentoUsu, auxLista);
             }
             case "4":
             {
@@ -78,6 +85,39 @@ public class Menu{
         return logado;
         
         
+    }
+
+    public static Usuario criarPedido(Usuario logado, Scanner in, Departamento departamentoUsu, ListaDepartUsua listaAux){
+        System.out.print("\nInforme a data do pedido:");
+        String dataDoPedido = in.nextLine();
+        boolean op = false;
+        ArrayList<Item> listaItens = new ArrayList<>();
+        do{
+            System.out.print("\nInforme a descrição do item: ");
+            String descItem = in.nextLine();
+            System.out.print("\nInforme o valor do item: ");
+            double valor = in.nextDouble();
+            System.out.print("\nInforme a quantidade desejada: ");
+            int quantidade = in.nextInt();
+            Item item = new Item(descItem, valor, quantidade);
+            listaItens.add(item);
+            System.out.print("\nDeseja adicionar outro item? \n[1] sim \n[0] não");
+            int resposta = in.nextInt();
+            in.nextLine();
+            if(resposta == 0){
+                op = true;
+            }
+        }while(!op);
+
+        PedidoAquisicao pedido = new PedidoAquisicao(logado, departamentoUsu, dataDoPedido, listaItens);
+
+        if(pedido.getValorTotalPedido() > departamentoUsu.getValorLimitePedido()){
+            System.out.println("Pedido de aquisição inválido: não respeitou o valor limite.");
+        } else{
+            listaAux.adcionaPedidoAquisicao(pedido);
+            System.out.println("Pedido de aquisição adicionado.");
+        }
+        return logado;
     }
 
     public static Usuario ADM(ListaDepartUsua user, Usuario usuarioLogado)

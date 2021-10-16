@@ -12,6 +12,8 @@ public class ListaDepartUsua {
 
         this.listaDepartamentos = new ArrayList<>();
         preencheDepartamentos();
+
+        this.listaPedidoAquisicao = new ArrayList<>();
     }
 
     //Serve para iniciar os usuarios

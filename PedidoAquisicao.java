@@ -16,12 +16,11 @@ public class PedidoAquisicao {
     private ArrayList<Item> listaItens;
     private double valorTotalPedido;
 
-    public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, String dataDoPedido, String
-            dataDeConclusao, ArrayList<Item> listaItens) {
+    public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, String dataDoPedido, ArrayList<Item> listaItens) {
         this.usuarioSolicitante = usuarioSolicitante;
         this.departamentoSolicitante = departamentoSolicitante;
         this.dataDoPedido = dataDoPedido;
-        this.dataDeConclusao = dataDeConclusao;
+        this.dataDeConclusao = "";
         this.statusDoPedido = 1;
         this.listaItens = listaItens;
         this.valorTotalPedido = calculaValorTotalDePedido();
@@ -46,6 +45,10 @@ public class PedidoAquisicao {
 
     public int getStatusDoPedido() {
         return statusDoPedido;
+    }
+
+    public double getValorTotalPedido(){
+     return valorTotalPedido;
     }
 
     public void setListaItens(ArrayList<Item> listaItens) {
