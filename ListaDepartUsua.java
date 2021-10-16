@@ -4,6 +4,7 @@ public class ListaDepartUsua {
 
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
+    private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
 
     public ListaDepartUsua() {
         this.listaUsuarios = new ArrayList<>(15);
@@ -111,4 +112,13 @@ public class ListaDepartUsua {
         //Se nao tiver um departamento com o nome passado
         return null;
     }
+
+    public void adcionaPedidoAquisicao(PedidoAquisicao pedido) {
+        this.listaPedidoAquisicao.add(pedido);
+    }
+
+    public ArrayList<PedidoAquisicao> getListaPedidoAquisicao() {
+        return this.listaPedidoAquisicao;
+    }
+
 }
