@@ -14,10 +14,10 @@ public class PedidoAquisicao {
     // status 2 = aprovado
     // status 3 = concluído
     private ArrayList<Item> listaItens;
-    private int valorTotalPedido;
+    private double valorTotalPedido;
 
     public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, String dataDoPedido, String
-            dataDeConclusao, int statusDoPedido, ArrayList<Item> listaItens, int valorTotalPedido) {
+            dataDeConclusao, ArrayList<Item> listaItens) {
         this.usuarioSolicitante = usuarioSolicitante;
         this.departamentoSolicitante = departamentoSolicitante;
         this.dataDoPedido = dataDoPedido;
@@ -72,8 +72,12 @@ public class PedidoAquisicao {
         this.statusDoPedido = statusDoPedido;
     }
 
-    private int calculaValorTotalDePedido(){
-        //todo
-        return 0;
+    private double calculaValorTotalDePedido(){
+
+        double valorTotal = 0;
+        for (Item produto : this.listaItens) {
+            valorTotal+= produto.getTotalDoItem();
+        }
+        return valorTotal;
     }
 }
