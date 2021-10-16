@@ -1,12 +1,18 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu{
     public static void main (String[] args){
+
+        //Classe que contem todos os dados (usuarios, departamentos e pedidos)
         ListaDepartUsua auxLista = new ListaDepartUsua();
         boolean sair = false;
         Usuario usuarioLogado = null;
         usuarioLogado = Login(auxLista);
+
         do{
             usuarioLogado = Menu(usuarioLogado, auxLista, sair);
         }while(true);
@@ -27,6 +33,7 @@ public class Menu{
         System.out.println("9 - Sair"); 
         System.out.print("Opcao: ");
         opcao = in.nextLine();
+
         switch(opcao)
         {
             case "1":
@@ -88,34 +95,134 @@ public class Menu{
     }
 
     public static Usuario criarPedido(Usuario logado, Scanner in, Departamento departamentoUsu, ListaDepartUsua listaAux){
-        System.out.print("\nInforme a data do pedido:");
-        String dataDoPedido = in.nextLine();
-        boolean op = false;
+
         ArrayList<Item> listaItens = new ArrayList<>();
+        boolean op = false;
+        boolean subLoop1 = false;
+
+        System.out.println("\nIniciando cadastramento de pedido...");
+
+        System.out.println("\n--------------------------------->");
+        String dataString = "";
+        do {
+            System.out.print("Informe a data do pedido, com formato dd/MM/yyyy: ");
+            dataString = in.nextLine();
+
+            if (dataString.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
+                int dias = Integer.parseInt(dataString.substring(0,2));
+                int mes = Integer.parseInt(dataString.substring(3,5));
+
+                if ((dias >= 1 && dias <= 31) && (mes >= 1 && mes <= 12)) {
+                    subLoop1 = false;
+                }
+                else {
+                    System.out.println("Valor invalido para data, coloque numeros relativos ao calendario.\n");
+                    subLoop1 = true;
+                }
+
+            } else {
+                System.out.println("Valor invalido para data, siga o modelo de formato.\n");
+                subLoop1 = true;
+            }
+        } while (subLoop1);
+
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataPedido = LocalDate.parse(dataString,formatoData);
+
         do{
-            System.out.print("\nInforme a descrição do item: ");
+            double valor = 0;
+            int quantidade = 0;
+
+            System.out.println("\n--------------------------------->");
+            System.out.print("Informe a descrição do item: ");
             String descItem = in.nextLine();
-            System.out.print("\nInforme o valor do item: ");
-            double valor = in.nextDouble();
-            System.out.print("\nInforme a quantidade desejada: ");
-            int quantidade = in.nextInt();
+
+            //Validacao do valor do item
+            System.out.println("\n--------------------------------->");
+            do {
+                try {
+                    System.out.print("Informe o valor do item: ");
+                    valor = in.nextDouble();
+                    subLoop1 = false;
+                } catch (InputMismatchException e1) {
+                    System.out.println("Erro: Coloque um numero valido.\n");
+                    subLoop1 = true;
+                    in.nextLine();
+
+                } catch (Exception e2) {
+                    System.out.println("Erro: " + e2+"\n");
+                    subLoop1 = true;
+                    in.nextLine();
+                }
+            } while(subLoop1);
+
+
+            //Validacao da quantidade desejada
+            System.out.println("\n--------------------------------->");
+            do {
+                try {
+                    System.out.print("Informe a quantidade desejada: ");
+                    quantidade = in.nextInt();
+                    subLoop1 = false;
+                } catch (InputMismatchException e1) {
+                    System.out.println("Erro: Coloque um numero inteiro.\n");
+                    subLoop1 = true;
+                    in.nextLine();
+
+                } catch (Exception e2) {
+                    System.out.println("Erro: " + e2+"\n");
+                    subLoop1 = true;
+                    in.nextLine();
+                }
+            } while(subLoop1);
+
             Item item = new Item(descItem, valor, quantidade);
             listaItens.add(item);
-            System.out.print("\nDeseja adicionar outro item? \n[1] sim \n[0] não");
-            int resposta = in.nextInt();
-            in.nextLine();
-            if(resposta == 0){
+            System.out.println();
+
+            //Validacao de continuacao
+            int resposta = -1;
+            do {
+                try {
+                    System.out.println("Deseja adicionar outro item? \n[1] sim \n[0] não");
+                    System.out.print("Sua resposta: ");
+                    resposta = in.nextInt();
+                    subLoop1 = false;
+                } catch (InputMismatchException e1) {
+                    System.out.println("Erro: Coloque um numero inteiro.\n");
+                    subLoop1 = true;
+                    in.nextLine();
+
+                } catch (Exception e2) {
+                    System.out.println("Erro: " + e2+"\n");
+                    subLoop1 = true;
+                    in.nextLine();
+                }
+
+                if (resposta != 0 && resposta != 1) {
+                    if (!subLoop1) { //Visando o buffer que vai ser limpo do in.nextLine()
+                        System.out.println("Erro: Selecione um indice valido.\n");
+                        subLoop1 = true;
+                        in.nextLine();
+                    }
+                }
+            } while(subLoop1);
+
+            if (resposta == 0) {
                 op = true;
             }
+            //Limpa o buffer
+            in.nextLine();
+
         }while(!op);
 
-        PedidoAquisicao pedido = new PedidoAquisicao(logado, departamentoUsu, dataDoPedido, listaItens);
+        PedidoAquisicao pedido = new PedidoAquisicao(logado, departamentoUsu, dataPedido, listaItens);
 
         if(pedido.getValorTotalPedido() > departamentoUsu.getValorLimitePedido()){
-            System.out.println("Pedido de aquisição inválido: não respeitou o valor limite.");
+            System.out.println("\nPedido de aquisição inválido: não respeitou o valor limite.");
         } else{
             listaAux.adcionaPedidoAquisicao(pedido);
-            System.out.println("Pedido de aquisição adicionado.");
+            System.out.println("\nPedido de aquisição adicionado.");
         }
         return logado;
     }

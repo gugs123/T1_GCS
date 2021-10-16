@@ -1,30 +1,36 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PedidoAquisicao {
-    private Usuario usuarioSolicitante;
 
+    private Usuario usuarioSolicitante;
     private static int cont = 0;
     private Departamento departamentoSolicitante;
-    private String dataDoPedido;
-    private String dataDeConclusao;
+    private LocalDate dataDoPedido;
+    private LocalDate dataDeConclusao;
     private int statusDoPedido;
+
     private int idPedido;
     // status 0 = reprovado
     // status 1 = aberto
     // status 2 = aprovado
     // status 3 = concluído
+
     private ArrayList<Item> listaItens;
     private double valorTotalPedido;
 
-    public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, String dataDoPedido, ArrayList<Item> listaItens) {
+    public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, LocalDate dataDoPedido, ArrayList<Item> listaItens) {
         this.usuarioSolicitante = usuarioSolicitante;
         this.departamentoSolicitante = departamentoSolicitante;
         this.dataDoPedido = dataDoPedido;
-        this.dataDeConclusao = "";
         this.statusDoPedido = 1;
         this.listaItens = listaItens;
         this.valorTotalPedido = calculaValorTotalDePedido();
+
+        //Incrementa o contador
         this.idPedido = cont;
+        cont++;
     }
 
     public Usuario getUsuarioSolicitante() {
@@ -35,11 +41,11 @@ public class PedidoAquisicao {
         return departamentoSolicitante;
     }
 
-    public String getDataDoPedido() {
+    public LocalDate getDataDoPedido() {
         return dataDoPedido;
     }
 
-    public String getDataDeConclusao() {
+    public LocalDate getDataDeConclusao() {
         return dataDeConclusao;
     }
 
@@ -63,12 +69,14 @@ public class PedidoAquisicao {
         this.departamentoSolicitante = departamentoSolicitante;
     }
 
-    public void setDataDoPedido(String dataDoPedido) {
-        this.dataDoPedido = dataDoPedido;
+    public void setDataDoPedido(String dataDoPedidoString) {
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.dataDoPedido = LocalDate.parse(dataDoPedidoString,formatoData);
     }
 
-    public void setDataDeConclusao(String dataDeConclusao) {
-        this.dataDeConclusao = dataDeConclusao;
+    public void setDataDeConclusao(String dataConclusaoString) {
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.dataDeConclusao = LocalDate.parse(dataConclusaoString,formatoData);
     }
 
     public void setStatusDoPedido(int statusDoPedido) {
