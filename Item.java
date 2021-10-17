@@ -1,10 +1,10 @@
 public class Item {
     private String descricaoItem;
-    private int valorUnitario;
+    private double valorUnitario;
     private int quantidade;
-    private int totalDoItem;
+    private double totalDoItem;
 
-    public Item (String descricaoItem, int valorUnitario, int quantidade) {
+    public Item (String descricaoItem, double valorUnitario, int quantidade) {
         this.descricaoItem = descricaoItem;
         this.valorUnitario = valorUnitario;
         this.quantidade = quantidade;
@@ -19,7 +19,7 @@ public class Item {
         this.descricaoItem = descricaoItem;
     }
 
-    public int getValorUnitario() {
+    public double getValorUnitario() {
         return valorUnitario;
     }
 
@@ -35,10 +35,8 @@ public class Item {
         this.quantidade = quantidade;
     }
 
-    public int getTotalDoItem() {
+    public double getTotalDoItem() {
         return totalDoItem;
     }
-    private String descricao;
-    private double preco;
 
 }

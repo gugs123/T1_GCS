@@ -4,6 +4,7 @@ public class ListaDepartUsua {
 
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
+    private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
 
     public ListaDepartUsua() {
         this.listaUsuarios = new ArrayList<>(15);
@@ -11,6 +12,8 @@ public class ListaDepartUsua {
 
         this.listaDepartamentos = new ArrayList<>();
         preencheDepartamentos();
+
+        this.listaPedidoAquisicao = new ArrayList<>();
     }
 
     //Serve para iniciar os usuarios
@@ -81,7 +84,6 @@ public class ListaDepartUsua {
             user = listaUsuarios.get(i);
             if(user.getMatricula().equals(matricula))
             {
-                System.out.println(user);
                 return user;
             }
         }
@@ -95,4 +97,30 @@ public class ListaDepartUsua {
     public ArrayList<Departamento> getListaDepartamentos() {
         return this.listaDepartamentos;
     }
+
+    //Serve para buscar um Departamento(classe) pelo nome dele
+    public Departamento buscaPorDepartamento(String nomeDepartamento) {
+
+        int qtd_users = listaDepartamentos.size();
+        Departamento auxDepart = null;
+        for(int i = 0; i < qtd_users; i++){
+            auxDepart = listaDepartamentos.get(i);
+            if(auxDepart.getNomeDepartamento().equals(nomeDepartamento))
+            {
+                return auxDepart;
+            }
+        }
+
+        //Se nao tiver um departamento com o nome passado
+        return null;
+    }
+
+    public void adcionaPedidoAquisicao(PedidoAquisicao pedido) {
+        this.listaPedidoAquisicao.add(pedido);
+    }
+
+    public ArrayList<PedidoAquisicao> getListaPedidoAquisicao() {
+        return this.listaPedidoAquisicao;
+    }
+
 }
