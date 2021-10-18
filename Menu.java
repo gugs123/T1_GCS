@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 public class Menu{
     public static void main (String[] args){
-
+        //Chama função limpa terminal
+        LimpaTela();
         //Classe que contem todos os dados (usuarios, departamentos e pedidos)
         ListaDepartUsua auxLista = new ListaDepartUsua();
         boolean sair = false;
@@ -18,10 +19,17 @@ public class Menu{
         }while(true);
     }
     
+    public static void LimpaTela(){
+
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    } 
+
     public static Usuario Menu(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean sair){
         Scanner in = new Scanner(System.in);
         String opcao = "";
-        System.out.println("\nOperador do sistema: "+ usuarioLogado.getNome());
+        LimpaTela();
+        System.out.println("Operador do sistema: "+ usuarioLogado.getNome());
         System.out.println("Iniciais: "+ usuarioLogado.getInicialNome() + ". " + usuarioLogado.getInicialSobrenome() + ".");
         System.out.println();
         System.out.println();
@@ -82,7 +90,7 @@ public class Menu{
     {
         Usuario logado = null;
         do{   
-            
+            LimpaTela();
             Scanner in = new Scanner(System.in);
             System.out.println("Insira sua matricula para entrar no sistema: ");
             System.out.print("Matricula: ");
@@ -99,10 +107,7 @@ public class Menu{
         ArrayList<Item> listaItens = new ArrayList<>();
         boolean op = false;
         boolean subLoop1 = false;
-
-        System.out.println("\nIniciando cadastramento de pedido...");
-
-        System.out.println("\n--------------------------------->");
+        LimpaTela();
         String dataString = "";
         do {
             System.out.print("Informe a data do pedido, com formato dd/MM/yyyy: ");
@@ -132,15 +137,14 @@ public class Menu{
         do{
             double valor = 0;
             int quantidade = 0;
-
-            System.out.println("\n--------------------------------->");
+            LimpaTela();
             System.out.print("Informe a descrição do item: ");
             String descItem = in.nextLine();
 
             //Validacao do valor do item
-            System.out.println("\n--------------------------------->");
             do {
                 try {
+
                     System.out.print("Informe o valor do item: ");
                     valor = in.nextDouble();
                     subLoop1 = false;
@@ -158,9 +162,9 @@ public class Menu{
 
 
             //Validacao da quantidade desejada
-            System.out.println("\n--------------------------------->");
             do {
                 try {
+
                     System.out.print("Informe a quantidade desejada: ");
                     quantidade = in.nextInt();
                     subLoop1 = false;
