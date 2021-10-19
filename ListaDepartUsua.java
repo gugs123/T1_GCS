@@ -116,12 +116,55 @@ public class ListaDepartUsua {
         return null;
     }
 
-    public void adcionaPedidoAquisicao(PedidoAquisicao pedido) {
+    public void adicionaPedidoAquisicao(PedidoAquisicao pedido) {
         this.listaPedidoAquisicao.add(pedido);
+    }
+
+    public PedidoAquisicao getPedidoAquisicao(int idPedido){
+        return listaPedidoAquisicao.get(idPedido);
     }
 
     public ArrayList<PedidoAquisicao> getListaPedidoAquisicao() {
         return this.listaPedidoAquisicao;
     }
 
+    public int getListaPedidoAquisicaoSize(){
+        return this.listaPedidoAquisicao.size();
+    }
+
+    public ArrayList<PedidoAquisicao> getListaPedidosFunc(Usuario usuarioLogado){
+        ArrayList<PedidoAquisicao> pedidos = new ArrayList<>();
+        for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
+            if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
+                pedidos.add(getPedidoAquisicao(i));
+            }
+        }
+        return pedidos;
+    }
+    
+    public String getListaPedidosFuncToString(Usuario usuarioLogado){
+        String lista = "";
+
+        for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
+            if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
+                PedidoAquisicao teste = getPedidoAquisicao(i);
+                lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
+                lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
+                if(teste.getQtdItens() > 3) {
+                    lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
+                    lista += teste.getItensStringShortLimitado(3);
+                    lista += ", entre outros";
+                } else {
+                    lista += "; Itens: "; lista += teste.getItensStringShort();
+                }
+                lista += "; Valor total: "; lista += teste.getValorTotalPedido();
+                lista += "; Status: "; lista += teste.getStatusString();
+                if((teste.getStatusDoPedido() != 1) && teste.getDataDeConclusao() != null) {
+                    lista += "; Data de conclusão: "; lista += teste.getDataDeConclusao();
+                }
+                lista += ".";
+            }
+        }
+        return lista;
+    }
 }
