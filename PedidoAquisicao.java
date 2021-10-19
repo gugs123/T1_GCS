@@ -135,15 +135,17 @@ public class PedidoAquisicao {
             + "\nNO DIA " + getDataDoPedido()
             + "\nO PEDIDO " + getStatusString().toUpperCase()
             + "\nDATA DE CONCLUSÃO: " + getDataDeConclusao()
-            + "\nITENS INCLUSOS: " + "\n" + getItensString();
+            + "\nITENS INCLUSOS: " + "\n" + getItensString()
+            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido();
         }
         else{
-            return "PEDIDO NÚMERO " + idPedido 
+            return "PEDIDO NÚMERO " + idPedido + "................."
             + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
             + "\nDO DEPARTAMENTO " + getDepartamentoSolicitante().getNomeDepartamento()
             + "\nNO DIA " + getDataDoPedido()
             + "\nO PEDIDO " + getStatusString().toUpperCase()
-            + "\nITENS INCLUSOS: " + "\n" + getItensString();
+            + "\nITENS INCLUSOS: " + "\n" + getItensString()
+            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido();
         }
     }
 }

@@ -303,10 +303,10 @@ public class Menu{
                     if(idPedido == -1) {subLoop = false; break;}
 
                 if(idPedido < auxLista.getListaPedidoAquisicaoSize()) {
-                    System.out.println("---------------------------------------------------------");
+                    System.out.println("\n---------------------------------------------------------");
                     PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
                     System.out.println(retorno.pedidoToString(idPedido));
-                    System.out.println("---------------------------------------------------------");
+                    System.out.println("---------------------------------------------------------\n");
                 }
                 else {System.out.println("\nNão há pedido com este número de identificação."); break;}
 
