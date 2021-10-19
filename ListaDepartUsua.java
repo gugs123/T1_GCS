@@ -115,12 +115,19 @@ public class ListaDepartUsua {
         return null;
     }
 
-    public void adcionaPedidoAquisicao(PedidoAquisicao pedido) {
+    public void adicionaPedidoAquisicao(PedidoAquisicao pedido) {
         this.listaPedidoAquisicao.add(pedido);
+    }
+
+    public PedidoAquisicao getPedidoAquisicao(int idPedido){
+        return listaPedidoAquisicao.get(idPedido);
     }
 
     public ArrayList<PedidoAquisicao> getListaPedidoAquisicao() {
         return this.listaPedidoAquisicao;
     }
 
+    public int getListaPedidoAquisicaoSize(){
+        return this.listaPedidoAquisicao.size();
+    }
 }

@@ -13,6 +13,7 @@ public class Menu{
         boolean sair = false;
         Usuario usuarioLogado = null;
         usuarioLogado = Login(auxLista);
+        ArrayList<PedidoAquisicao> pedidos;
 
         do{
             usuarioLogado = Menu(usuarioLogado, auxLista, sair);
@@ -34,12 +35,12 @@ public class Menu{
         System.out.println();
         System.out.println();
         System.out.println("*STANLEY* - Sistema de Controle de Aquisição");
-        System.out.println("1 - Alterar usuario");
+        System.out.println("1 - Alterar usuário");
         System.out.println("2 - Criar um pedido");
         System.out.println("3 - Buscar pedido");
         System.out.println("4 - Painel Admistrador");
         System.out.println("9 - Sair"); 
-        System.out.print("Opcao: ");
+        System.out.print("Opção: ");
         opcao = in.nextLine();
 
         switch(opcao)
@@ -52,7 +53,12 @@ public class Menu{
             {
                 //Pega um departamento a partir de uma String(nome do departamento) de um usuário
                 Departamento departamentoUsu = auxLista.buscaPorDepartamento(usuarioLogado.getDepartamento());
+                //if(criarPedido(usuarioLogado, in, departamentoUsu, auxLista) == usuarioLogado) System.out.println("Pedido adicionado com sucesso.");
                 return criarPedido(usuarioLogado, in, departamentoUsu, auxLista);
+            }
+            case "3":
+            {
+                busca(usuarioLogado, auxLista);
             }
             case "4":
             {
@@ -60,7 +66,7 @@ public class Menu{
                 usuarioLogado = ADM(auxLista, usuarioLogado);
                 if(usuarioLogado==null)
                 {
-                    System.out.println("Usuario logado nao tem permissao para acessar este menu");
+                    System.out.println("Usuário logado nao tem permissão para acessar este menu");
                     return aux;
                 }
                 else
@@ -79,7 +85,7 @@ public class Menu{
             }
             default:
             {
-                System.out.println("Opcao invalida\n");
+                System.out.println("Opção inválida\n");
                 break;
             }
         }
@@ -92,8 +98,8 @@ public class Menu{
         do{   
             LimpaTela();
             Scanner in = new Scanner(System.in);
-            System.out.println("Insira sua matricula para entrar no sistema: ");
-            System.out.print("Matricula: ");
+            System.out.println("Insira sua matrícula para entrar no sistema: ");
+            System.out.print("Matrícula: ");
             String matricula = in.nextLine();
             logado = users.buscaPorMatricula(matricula);
         }while(logado == null);
@@ -121,12 +127,12 @@ public class Menu{
                     subLoop1 = false;
                 }
                 else {
-                    System.out.println("Valor invalido para data, coloque numeros relativos ao calendario.\n");
+                    System.out.println("Valor inválido para data, coloque numeros relativos ao calendário.\n");
                     subLoop1 = true;
                 }
 
             } else {
-                System.out.println("Valor invalido para data, siga o modelo de formato.\n");
+                System.out.println("Valor inválido para data, siga o modelo de formato.\n");
                 subLoop1 = true;
             }
         } while (subLoop1);
@@ -149,7 +155,7 @@ public class Menu{
                     valor = in.nextDouble();
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
-                    System.out.println("Erro: Coloque um numero valido.\n");
+                    System.out.println("Erro: Coloque um numero válido.\n");
                     subLoop1 = true;
                     in.nextLine();
 
@@ -169,7 +175,7 @@ public class Menu{
                     quantidade = in.nextInt();
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
-                    System.out.println("Erro: Coloque um numero inteiro.\n");
+                    System.out.println("Erro: Coloque um número inteiro.\n");
                     subLoop1 = true;
                     in.nextLine();
 
@@ -193,7 +199,7 @@ public class Menu{
                     resposta = in.nextInt();
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
-                    System.out.println("Erro: Coloque um numero inteiro.\n");
+                    System.out.println("Erro: Coloque um número inteiro.\n");
                     subLoop1 = true;
                     in.nextLine();
 
@@ -205,7 +211,7 @@ public class Menu{
 
                 if (resposta != 0 && resposta != 1) {
                     if (!subLoop1) { //Visando o buffer que vai ser limpo do in.nextLine()
-                        System.out.println("Erro: Selecione um indice valido.\n");
+                        System.out.println("Erro: Selecione um índice válido.\n");
                         subLoop1 = true;
                         in.nextLine();
                     }
@@ -225,7 +231,7 @@ public class Menu{
         if(pedido.getValorTotalPedido() > departamentoUsu.getValorLimitePedido()){
             System.out.println("\nPedido de aquisição inválido: não respeitou o valor limite.");
         } else{
-            listaAux.adcionaPedidoAquisicao(pedido);
+            listaAux.adicionaPedidoAquisicao(pedido);
             System.out.println("\nPedido de aquisição adicionado.");
         }
         return logado;
@@ -243,19 +249,18 @@ public class Menu{
         
     }
 
-    public static void menuADM()
-        {
+    public static void menuADM() {
             boolean sair = false;
             while(sair==false)
             {
                 System.out.println("Menu Admimistrador");
                 System.out.println("1- Avaliar pedido em aberto");
-                System.out.println("2- Estatistica de pedidos totais");
-                System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
-                System.out.println("4- Valor total de cada categoria dos ultimos 30 dias");            
+                System.out.println("2- Estatística de pedidos totais");
+                System.out.println("3- Número de pedidos dos últimos 30 dias e seu valor médio");            
+                System.out.println("4- Valor total de cada categoria dos últimos 30 dias");            
                 System.out.println("5- Detalhes do pedido de maior valor ainda em aberto");            
                 System.out.println("6- Sair do menu ADM");            
-                System.out.print("Opcao: ");
+                System.out.print("Opção: ");
                 Scanner in = new Scanner(System.in);
                 String opcao = in.nextLine();
                 switch(opcao)
@@ -279,8 +284,121 @@ public class Menu{
                     sair = true;
                     break;
                     default:
-                    System.out.println("Opcao invalida");
+                    System.out.println("Opção inválida");
+                }
+            }
+    }
+
+    public static void busca(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        Scanner in = new Scanner(System.in);
+        boolean subLoop = true;
+            if(auxLista.getListaPedidoAquisicaoSize() == 0) {
+                System.out.println("\nNão há pedidos salvos na sua lista.\nDigite qualquer coisa para voltar ao menu principal.");
+                String input = in.next();
+                if(input != null) subLoop = false;
+            }
+            else {do{
+                System.out.println("\nDigite o número de identificação do pedido que gostaria de ver. Digite -1 para sair.");
+                int idPedido = in.nextInt();
+                    if(idPedido == -1) {subLoop = false; break;}
+
+                if(idPedido < auxLista.getListaPedidoAquisicaoSize()) {
+                    System.out.println("---------------------------------------------------------");
+                    PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+                    System.out.println(retorno.pedidoToString(idPedido));
+                    System.out.println("---------------------------------------------------------");
+                }
+                else {System.out.println("\nNão há pedido com este número de identificação."); break;}
+
+                System.out.println("\nDeseja fazer algo com este pedido?");
+                System.out.println("0 - Não.");
+                System.out.println("1 - Deletar pedido");
+                System.out.println("2 - Editar pedido");
+                System.out.println("3 - Marcar como concluído");
+                int opcaoCase = in.nextInt();
+                switch(opcaoCase){
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        deletar(usuarioLogado, in, idPedido, auxLista);
+                        break;
+                    }
+                    case 2: {
+                        editar(usuarioLogado, in, idPedido, auxLista);
+                        break;
+                    }
+                    case 3: {
+                        PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+                        statusChanger(usuarioLogado, in, retorno, 3, idPedido);
+                        break;
+                    }
+                }
+        }while(subLoop == true);}
+    }
+    
+    private static void statusChanger(Usuario usuarioLogado, Scanner in, PedidoAquisicao retorno, int status, int idPedido){
+        if(usuarioLogado.isAdm() == false) {
+            if(retorno.getStatusDoPedido() == status) System.out.println("Este pedido já " + retorno.getStatusString() + ".");
+            else {
+            System.out.println("ATENÇÃO: Uma vez que um produto não está mais em aberto, ele não pode ser reaberto, apenas visto.\nDeseja continuar?");
+            int yesNo;
+            System.out.println("Digite 0 para CANCELAR.\nDigite 1 para CONTINUAR.");
+            yesNo = in.nextInt();
+                if(yesNo == 1) { retorno.setStatusDoPedido(status); System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + "."); }
+                else if (yesNo == 0) System.out.println("Operação cancelada.");
+                else System.out.println("Opção inválida.");
+            }
+        } 
+        
+        else {
+            retorno.setStatusDoPedido(status);
+            System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + ".");
+        }   
+    }
+
+    private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
+        PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+        if(usuarioLogado == retorno.getUsuarioSolicitante()){
+            System.out.println("Você tem certeza que quer deletar este pedido? Esta ação é irreversível.");
+            System.out.println("Não se preocupe. Os números de identificação dos outros pedidos continuarão os mesmos.");
+            System.out.println("[0] para CANCELAR\n[1] para CONFIRMAR");
+            int opcao = in.nextInt();
+            if(opcao == 1){
+                // TO-DO
+            }
+            else System.out.println("Operação cancelada.");
+        }
+        else System.out.println("Desculpe. Você não pode executar esta função.");
+    }
+
+    private static void editar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
+        PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+        if(retorno.getStatusDoPedido() != 1) System.out.println("Desculpe, mas este pedido não pode ser editado.");
+        else {
+            System.out.println("O que gostaria de modificar?\nDigite:");
+            System.out.println("[0] Cancelar\n[1] Status do pedido\n[2] Itens do pedido");
+            int opcao = in.nextInt();
+            switch(opcao){
+                case 1: {
+                    if(usuarioLogado.isAdm()) {
+                        System.out.println("Qual status gostaria de atribuir ao pedido?");
+                        System.out.println("[1] Reprovado\n[2] Aprovado\n[3] Concluído");
+                        int status = in.nextInt();
+                        statusChanger(usuarioLogado, in, retorno, status, idPedido);
+                    }
+                    else statusChanger(usuarioLogado, in, retorno, 1, idPedido);
+                }
+                case 2: {
+                    retorno.getItensString();
+                    System.out.println("Selecione um item.");
+                    // TO-DO
+                }
+                default: {
+                    break;
                 }
             }
         }
+
+    }
 }

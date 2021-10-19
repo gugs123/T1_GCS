@@ -10,12 +10,12 @@ public class PedidoAquisicao {
     private LocalDate dataDoPedido;
     private LocalDate dataDeConclusao;
     private int statusDoPedido;
-
-    private int idPedido;
     // status 0 = reprovado
     // status 1 = aberto
     // status 2 = aprovado
     // status 3 = concluído
+    // status 4 = deletado
+    private int idPedido;
 
     private ArrayList<Item> listaItens;
     private double valorTotalPedido;
@@ -34,6 +34,7 @@ public class PedidoAquisicao {
     }
 
     public Usuario getUsuarioSolicitante() {
+        if(usuarioSolicitante == null) System.out.println("");
         return usuarioSolicitante;
     }
 
@@ -51,6 +52,40 @@ public class PedidoAquisicao {
 
     public int getStatusDoPedido() {
         return statusDoPedido;
+    }
+
+    public String getStatusString(){
+        if(statusDoPedido == 0) return "foi reprovado";
+        else if(statusDoPedido == 1) return "está em aberto";
+        else if(statusDoPedido == 2) return "foi aprovado";
+        else if(statusDoPedido == 3) return "foi concluído";
+        else return "pedido não entrado";
+    }
+
+    public String getItensString(){
+        String itensString = "";
+        for(int i = 0; i < listaItens.size(); i++){
+            if(i == 0) {
+                itensString += i;
+                itensString += ". ";
+                itensString += listaItens.get(i).getDescricaoItem();
+                itensString += "; quantidade: ";
+                itensString += listaItens.get(i).getQuantidade();
+                itensString += "; valor unitário: ";
+                itensString += listaItens.get(i).getValorUnitario();
+            }
+            else {
+                itensString += "\n";
+                itensString += i;
+                itensString += ". ";
+                itensString += listaItens.get(i).getDescricaoItem();
+                itensString += "; quantidade: ";
+                itensString += listaItens.get(i).getQuantidade();
+                itensString += "; valor unitário: ";
+                itensString += listaItens.get(i).getValorUnitario();
+            }
+        }
+        return itensString;
     }
 
     public double getValorTotalPedido(){
@@ -90,5 +125,25 @@ public class PedidoAquisicao {
             valorTotal+= produto.getTotalDoItem();
         }
         return valorTotal;
+    }
+
+    public String pedidoToString(int idPedido){
+        if(getDataDeConclusao() != null){
+            return "PEDIDO NÚMERO " + idPedido 
+            + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
+            + "\nDO DEPARTAMENTO " + getDepartamentoSolicitante().getNomeDepartamento()
+            + "\nNO DIA " + getDataDoPedido()
+            + "\nO PEDIDO " + getStatusString().toUpperCase()
+            + "\nDATA DE CONCLUSÃO: " + getDataDeConclusao()
+            + "\nITENS INCLUSOS: " + "\n" + getItensString();
+        }
+        else{
+            return "PEDIDO NÚMERO " + idPedido 
+            + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
+            + "\nDO DEPARTAMENTO " + getDepartamentoSolicitante().getNomeDepartamento()
+            + "\nNO DIA " + getDataDoPedido()
+            + "\nO PEDIDO " + getStatusString().toUpperCase()
+            + "\nITENS INCLUSOS: " + "\n" + getItensString();
+        }
     }
 }
