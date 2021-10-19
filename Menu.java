@@ -20,10 +20,21 @@ public class Menu{
     }
     
     public static void LimpaTela(){
-
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
-    } 
+        try
+        {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")){
+                Runtime.getRuntime().exec("cls");
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+            else{
+                System.out.print("\033[H\033[2J");  
+                System.out.flush();
+            }
+        }
+        catch (final Exception e )
+        {}
+    }  
 
     public static Usuario Menu(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean sair){
         Scanner in = new Scanner(System.in);
@@ -245,6 +256,7 @@ public class Menu{
 
     public static void menuADM()
         {
+            LimpaTela();
             boolean sair = false;
             while(sair==false)
             {
