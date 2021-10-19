@@ -88,8 +88,38 @@ public class PedidoAquisicao {
         return itensString;
     }
 
+    public String getItensStringShort(){
+        String itensString = "";
+        for(int i = 0; i < listaItens.size(); i++){
+            if(i == 0) {
+                itensString += listaItens.get(i).getDescricaoItem();
+            } else {
+                itensString += ", ";
+                itensString += listaItens.get(i).getDescricaoItem();
+            }
+        }
+        return itensString;
+    }
+
+    public String getItensStringShortLimitado(int limite){
+        String itensString = "";
+        for(int i = 0; i < limite; i++){
+            if(i == 0) {
+                itensString += listaItens.get(i).getDescricaoItem();
+            } else {
+                itensString += ", ";
+                itensString += listaItens.get(i).getDescricaoItem();
+            }
+        }
+        return itensString;
+    }
+
     public double getValorTotalPedido(){
-     return valorTotalPedido;
+        return valorTotalPedido;
+    }
+
+    public int getQtdItens(){
+        return listaItens.size();
     }
 
     public void setListaItens(ArrayList<Item> listaItens) {

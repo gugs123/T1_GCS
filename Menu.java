@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu{
@@ -289,7 +290,7 @@ public class Menu{
             }
     }
 
-    public static void busca(Usuario usuarioLogado, ListaDepartUsua auxLista){
+    public static void buscaPorID(Usuario usuarioLogado, ListaDepartUsua auxLista){
         Scanner in = new Scanner(System.in);
         boolean subLoop = true;
             if(auxLista.getListaPedidoAquisicaoSize() == 0) {
@@ -310,51 +311,164 @@ public class Menu{
                 }
                 else {System.out.println("\nNão há pedido com este número de identificação."); break;}
 
-                System.out.println("\nDeseja fazer algo com este pedido?");
-                System.out.println("0 - Não.");
-                System.out.println("1 - Deletar pedido");
-                System.out.println("2 - Editar pedido");
-                System.out.println("3 - Marcar como concluído");
-                int opcaoCase = in.nextInt();
-                switch(opcaoCase){
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
-                        deletar(usuarioLogado, in, idPedido, auxLista);
-                        break;
-                    }
-                    case 2: {
-                        editar(usuarioLogado, in, idPedido, auxLista);
-                        break;
-                    }
-                    case 3: {
-                        PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-                        statusChanger(usuarioLogado, in, retorno, 3, idPedido);
-                        break;
-                    }
-                }
+                menuAlteracao(usuarioLogado, in, idPedido, auxLista);
+
         }while(subLoop == true);}
+    }
+
+    public static void menuAlteracao(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
+        System.out.println("\nDeseja fazer algo com este pedido?");
+        System.out.println("0 - Não.");
+        System.out.println("1 - Deletar pedido");
+        System.out.println("2 - Editar pedido");
+        System.out.println("3 - Marcar como concluído");
+        int opcaoCase = in.nextInt();
+        switch(opcaoCase){
+            case 0: {
+                break;
+            }
+            case 1: {
+                deletar(usuarioLogado, in, idPedido, auxLista);
+                break;
+            }
+            case 2: {
+                editar(usuarioLogado, in, idPedido, auxLista);
+                break;
+            }
+            case 3: {
+                PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+                statusChanger(usuarioLogado, in, retorno, 3, idPedido);
+                break;
+            }
+        }
+    }
+
+    private static void busca(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nMenu de busca");
+        System.out.println("[0] Cancelar\n[1] Ver todos os meus pedidos\n[2] Procurar pedidos por funcionário\n[3] Procurar pedidos por número de identificação\n[4] Procurar pedidos por itens inclusos");
+        int opcao = in.nextInt();
+        switch(opcao){
+            case 0:{
+                System.out.println("\nDigite qualquer coisa para sair.");
+                String sair = in.next();
+                if(sair != null) break;
+                break;
+            }
+            case 1:{
+                buscaPorFuncionario(usuarioLogado, auxLista, true);
+                System.out.println("\nDigite qualquer coisa para sair.");
+                String sair = in.next();
+                if(sair != null) break;
+                break;
+            }
+            case 2:{
+                buscaPorFuncionario(usuarioLogado, auxLista, false);
+                System.out.println("\nDigite qualquer coisa para sair.");
+                String sair = in.next();
+                if(sair != null) break;
+                break;
+            }
+            case 3:{
+                buscaPorID(usuarioLogado, auxLista);
+                System.out.println("\nDigite qualquer coisa para sair.");
+                String sair = in.next();
+                if(sair != null) break;
+                break;
+            }
+        }
+    }
+
+    // MÉTODO OBSOLETO, MAS DEIXADO AQUI CASO O buscaPorFuncionario QUEBRE
+    /*private static void buscaMeusPedidos(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        Scanner in = new Scanner(System.in);
+        int qtd = 0;
+        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+            if(teste.getUsuarioSolicitante() == usuarioLogado) { 
+                qtd++;
+            }
+        }
+        if(qtd == 0) System.out.println("\nVocê ainda não salvou pedido algum.");
+        else {
+            System.out.println("\nVocê salvou " + qtd + " pedidos.");
+            System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
+        }
+        
+        System.out.println("Selecionar algum pedido? Inserir o número para selecionar, ou -1 para sair.");
+        int opcao = in.nextInt();
+        if(opcao >= 0 && opcao < auxLista.getListaPedidosFunc(usuarioLogado).size()){
+            menuAlteracao(usuarioLogado, in, opcao, auxLista);
+        } else System.out.println("Saindo.");
+
+    }*/
+
+    private static void buscaPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean self){
+        Scanner in = new Scanner(System.in);
+        int qtd = 0;
+        String matricula = "";
+        if(self == false) {
+            System.out.println("\nInforme a matrícula do funcionário cujos pedidos você quer ver.");
+            matricula = in.next();
+        } else matricula = usuarioLogado.getMatricula();
+        Usuario pesquisa = auxLista.buscaPorMatricula(matricula);
+        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+            Usuario solicitante = teste.getUsuarioSolicitante();
+            if(solicitante == pesquisa) { 
+                qtd++;
+            }
+        }
+        if(qtd == 0 && usuarioLogado != pesquisa) System.out.println("\nNão há pedidos salvos por este funcionário. Digite qualquer coisa para sair.");
+        else if (qtd != 0 && usuarioLogado != pesquisa){
+            System.out.println("\nEste usuário salvou " + qtd + " pedidos.");
+            System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
+            if(usuarioLogado.isAdm() == false)System.out.println("\nVocê não pode modificar os pedidos de outros usuários, apenas pode vê-los. Digite qualquer coisa para sair.");
+            else {
+                System.out.println("Selecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para sair.");
+                int opcao = in.nextInt();
+                if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                menuAlteracao(usuarioLogado, in, opcao, auxLista);
+            } else System.out.println("Digite algo de novo.");
+            };
+        }
+        else if (qtd == 0 && usuarioLogado == pesquisa){ System.out.println("\nVocê ainda não salvou pedido algum. Digite qualquer coisa para sair."); }
+        else if (qtd != 0 && usuarioLogado == pesquisa){
+            System.out.println("\nVocê salvou " + qtd + " pedidos.");
+            System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
+            System.out.println("Selecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para sair.");
+            int opcao = in.nextInt();
+            if(opcao >= 0 && opcao < auxLista.getListaPedidoAquisicaoSize()){
+                menuAlteracao(usuarioLogado, in, opcao, auxLista);
+            } else System.out.println("Digite algo de novo.");
+        }
+        String opcao = in.next();
+        if(opcao != null) System.out.println("Saindo.");
     }
     
     private static void statusChanger(Usuario usuarioLogado, Scanner in, PedidoAquisicao retorno, int status, int idPedido){
-        if(usuarioLogado.isAdm() == false) {
-            if(retorno.getStatusDoPedido() == status) System.out.println("Este pedido já " + retorno.getStatusString() + ".");
-            else {
-            System.out.println("ATENÇÃO: Uma vez que um produto não está mais em aberto, ele não pode ser reaberto, apenas visto.\nDeseja continuar?");
-            int yesNo;
-            System.out.println("Digite 0 para CANCELAR.\nDigite 1 para CONTINUAR.");
-            yesNo = in.nextInt();
-                if(yesNo == 1) { retorno.setStatusDoPedido(status); System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + "."); }
-                else if (yesNo == 0) System.out.println("Operação cancelada.");
-                else System.out.println("Opção inválida.");
-            }
-        } 
-        
+        if(retorno.getStatusDoPedido() == status) System.out.println("Este pedido já " + retorno.getStatusString() + ". Digite qualquer coisa para sair.");
         else {
+        System.out.println("ATENÇÃO: Uma vez que um produto não está mais em aberto, ele não pode ser reaberto, apenas visto.\nDeseja continuar?");
+        int yesNo;
+        System.out.println("Digite 0 para CANCELAR.\nDigite 1 para CONTINUAR.");
+        yesNo = in.nextInt();
+            if(yesNo == 1) { 
+                if(status == 3 || usuarioLogado.isAdm() == true){
+                    System.out.println("\nInforme a data de conclusão, com formato dd/MM/yyyy: ");
+                    String dataConc = in.next();
+                    retorno.setDataDeConclusao(dataConc);
+                    retorno.setStatusDoPedido(status);
+                } else System.out.println("Erro: você não tem permissão para fazer esta alteração. Digite qualquer coisa para sair.");
+                System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + ". Digite qualquer coisa para sair."); }
+            else if (yesNo == 0) System.out.println("Operação cancelada. Digite qualquer coisa para sair.");
+            else System.out.println("Opção inválida. Digite qualquer coisa para sair.");
+        }
+
+        /*else {
             retorno.setStatusDoPedido(status);
             System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + ".");
-        }   
+        }*/
     }
 
     private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
