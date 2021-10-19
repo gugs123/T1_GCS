@@ -5,20 +5,21 @@ import java.util.ArrayList;
 public class PedidoAquisicao {
 
     private Usuario usuarioSolicitante;
-    private static int cont = 0;
     private Departamento departamentoSolicitante;
     private LocalDate dataDoPedido;
     private LocalDate dataDeConclusao;
-    private int statusDoPedido;
-    // status 0 = reprovado
-    // status 1 = aberto
-    // status 2 = aprovado
-    // status 3 = concluído
-    // status 4 = deletado
-    private int idPedido;
 
     private ArrayList<Item> listaItens;
     private double valorTotalPedido;
+
+    private int idPedido;
+    private static int cont = 0;
+
+    private int statusDoPedido;
+    // statusDoPedido = 0 --> reprovado
+    // statusDoPedido = 1 --> aberto
+    // statusDoPedido = 2 --> aprovado
+    // statusDoPedido = 3 --> concluído
 
     public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, LocalDate dataDoPedido, ArrayList<Item> listaItens) {
         this.usuarioSolicitante = usuarioSolicitante;
@@ -139,13 +140,36 @@ public class PedidoAquisicao {
         this.dataDoPedido = LocalDate.parse(dataDoPedidoString,formatoData);
     }
 
-    public void setDataDeConclusao(String dataConclusaoString) {
-        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        this.dataDeConclusao = LocalDate.parse(dataConclusaoString,formatoData);
+    public void setStatusDoPedido(int statusDoPedido) {
+        //Nao tem como passar 1 visto que ele ganha o status de aberto logo na sua criacao
+        //Nao tem como passar 3, porque sua conclusao so vai ser dada quando for entregue os itens
+        if (statusDoPedido == 0 || statusDoPedido == 2) {
+            this.statusDoPedido = statusDoPedido;
+        }
     }
 
-    public void setStatusDoPedido(int statusDoPedido) {
-        this.statusDoPedido = statusDoPedido;
+    //Nesse metodo vai ser determinado a data de conclusa (assim como a passagem do status para concluido), baseado na
+    //data de aprovacao, visto que demorar uma semana para chegar os intens solicitados depois de aprovado
+    public boolean setStatusDoPedido(int statusDoPedido, String dataAprovadoString) {
+
+        boolean concluidoSucesso = false;
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataAprov = LocalDate.parse(dataAprovadoString,formatoData);
+
+        //Nao tem como passar 1 visto que ele ganha o status de aberto logo na sua criacao
+        //Nao tem como passar 3, porque sua conclusao so vai ser dada quando for entregue os itens
+        if (statusDoPedido == 0) {
+            this.statusDoPedido = statusDoPedido;
+        }
+        else if (statusDoPedido == 2) {
+            if (dataAprov.isAfter(dataDoPedido)) {
+                this.statusDoPedido = 3;
+                this.dataDeConclusao = dataAprov.plusDays(7);
+                concluidoSucesso = true;
+            }
+        }
+
+        return concluidoSucesso;
     }
 
     private double calculaValorTotalDePedido(){

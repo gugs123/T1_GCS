@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class ListaDepartUsua {
 
+    //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
