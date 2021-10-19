@@ -120,6 +120,8 @@ public class Menu{
         boolean subLoop1 = false;
         LimpaTela();
         String dataString = "";
+        System.out.println();
+
         do {
             System.out.print("Informe a data do pedido, com formato dd/MM/yyyy: ");
             dataString = in.nextLine();
@@ -228,11 +230,13 @@ public class Menu{
             }
             //Limpa o buffer
             in.nextLine();
+            System.out.println();
 
         }while(!op);
 
         PedidoAquisicao pedido = new PedidoAquisicao(logado, departamentoUsu, dataPedido, listaItens);
 
+        //Faz a regra de negocio do limite do pedido
         if(pedido.getValorTotalPedido() > departamentoUsu.getValorLimitePedido()){
             System.out.println("\nPedido de aquisição inválido: não respeitou o valor limite.");
         } else{
