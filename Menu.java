@@ -339,7 +339,6 @@ public class Menu{
         System.out.println("0 - Não.");
         System.out.println("1 - Deletar pedido");
         System.out.println("2 - Editar pedido");
-        System.out.println("3 - Marcar como concluído");
         int opcaoCase = in.nextInt();
         switch(opcaoCase){
             case 0: {
@@ -351,11 +350,6 @@ public class Menu{
             }
             case 2: {
                 editar(usuarioLogado, in, idPedido, auxLista);
-                break;
-            }
-            case 3: {
-                PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-                statusChanger(usuarioLogado, in, retorno, 3, idPedido);
                 break;
             }
         }
@@ -463,31 +457,6 @@ public class Menu{
         String opcao = in.next();
         if(opcao != null) System.out.println("Saindo.");
     }
-    
-    private static void statusChanger(Usuario usuarioLogado, Scanner in, PedidoAquisicao retorno, int status, int idPedido){
-        if(retorno.getStatusDoPedido() == status) System.out.println("Este pedido já " + retorno.getStatusString() + ". Digite qualquer coisa para sair.");
-        else {
-        System.out.println("ATENÇÃO: Uma vez que um produto não está mais em aberto, ele não pode ser reaberto, apenas visto.\nDeseja continuar?");
-        int yesNo;
-        System.out.println("Digite 0 para CANCELAR.\nDigite 1 para CONTINUAR.");
-        yesNo = in.nextInt();
-            if(yesNo == 1) { 
-                if(status == 3 || usuarioLogado.isAdm() == true){
-                    System.out.println("\nInforme a data de conclusão, com formato dd/MM/yyyy: ");
-                    String dataConc = in.next();
-                    retorno.setDataDeConclusao(dataConc);
-                    retorno.setStatusDoPedido(status);
-                } else System.out.println("Erro: você não tem permissão para fazer esta alteração. Digite qualquer coisa para sair.");
-                System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + ". Digite qualquer coisa para sair."); }
-            else if (yesNo == 0) System.out.println("Operação cancelada. Digite qualquer coisa para sair.");
-            else System.out.println("Opção inválida. Digite qualquer coisa para sair.");
-        }
-
-        /*else {
-            retorno.setStatusDoPedido(status);
-            System.out.println("Status modificado com sucesso. O pedido " + retorno.getStatusString() + ".");
-        }*/
-    }
 
     private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
@@ -509,19 +478,10 @@ public class Menu{
         if(retorno.getStatusDoPedido() != 1) System.out.println("Desculpe, mas este pedido não pode ser editado.");
         else {
             System.out.println("O que gostaria de modificar?\nDigite:");
-            System.out.println("[0] Cancelar\n[1] Status do pedido\n[2] Itens do pedido");
+            System.out.println("[0] Cancelar\n[1] Itens do pedido");
             int opcao = in.nextInt();
             switch(opcao){
                 case 1: {
-                    if(usuarioLogado.isAdm()) {
-                        System.out.println("Qual status gostaria de atribuir ao pedido?");
-                        System.out.println("[1] Reprovado\n[2] Aprovado\n[3] Concluído");
-                        int status = in.nextInt();
-                        statusChanger(usuarioLogado, in, retorno, status, idPedido);
-                    }
-                    else statusChanger(usuarioLogado, in, retorno, 1, idPedido);
-                }
-                case 2: {
                     retorno.getItensString();
                     System.out.println("Selecione um item.");
                     // TO-DO
