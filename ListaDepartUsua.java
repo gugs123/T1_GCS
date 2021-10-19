@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class ListaDepartUsua {
@@ -16,7 +18,34 @@ public class ListaDepartUsua {
 
         this.listaPedidoAquisicao = new ArrayList<>();
     }
+    
+    // faz a média dos ultimos 30 dias baseadas nas referencias de LocalDate;
+     
+    public double utlimostrinta(){
+    
+        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+            
+       int count=0;
+        for(PedidoAquisicao i:listaPedidoAquisicao){
+           
+            LocalDate dateString = i.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+              if(range<=30){
+             
+               count++;
+              }
 
+        }
+        double valortotalMes=0;
+        for(PedidoAquisicao L: list){
+          valortotalMes+=L.getValorTotalPedido();
+      
+        }
+        valortotalMes=valortotalMes/count;
+    return valortotalMes;
+    }
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
 

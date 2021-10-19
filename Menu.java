@@ -250,7 +250,7 @@ public class Menu{
     {
         if(usuarioLogado.isAdm())
         {
-            menuADM();
+            menuADM(user);
             return usuarioLogado;
         }
         return null;
@@ -258,7 +258,7 @@ public class Menu{
         
     }
 
-    public static void menuADM()
+    public static void menuADM(ListaDepartUsua aux)
         {
             LimpaTela();
             boolean sair = false;
@@ -283,7 +283,7 @@ public class Menu{
                     //TODO
                     break;
                     case "3":
-                    //TODO
+                    System.out.println (aux.utlimostrinta());
                     break;
                     case "4":
                     //TODO
