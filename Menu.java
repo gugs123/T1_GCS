@@ -272,7 +272,7 @@ public class Menu{
             boolean sair = false;
             while(sair==false)
             {
-                System.out.println("Menu Admimistrador");
+                System.out.println("\nMenu Admimistrador");
                 System.out.println("1- Avaliar pedido em aberto");
                 System.out.println("2- Estatística de pedidos totais");
                 System.out.println("3- Número de pedidos dos últimos 30 dias e seu valor médio");            
@@ -534,22 +534,26 @@ public class Menu{
     private static void aprovaPedido(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         if(usuarioLogado.isAdm() == true){
             PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-            System.out.println("\nInforme a data de aprovação do pedido.");
-            String dataAprovadoString = in.next();
-            retorno.setStatusDoPedido(2, dataAprovadoString);
-            System.out.println("\nPedido aprovado com sucesso. Você tem 7 dias até a conclusão pré-programada do pedido. Digite qualquer coisa para sair.");
-            String saida = in.next();
-            if(saida != null) System.out.println("Saindo.");
+            if(retorno.getStatusDoPedido() == 1) {
+                System.out.println("\nInforme a data de aprovação do pedido.");
+                String dataAprovadoString = in.next();
+                retorno.setStatusDoPedido(2, dataAprovadoString);
+                System.out.println("\nPedido aprovado com sucesso. Você tem 7 dias até a conclusão pré-programada do pedido. Digite qualquer coisa para sair.");
+                String saida = in.next();
+                if(saida != null) System.out.println("Saindo.");
+            } else System.out.println("\nNão é possível modificar o status de um pedido uma vez que este já foi modificado. Digite qualquer coisa para sair.");
         } else System.out.println("\nVocê não tem autorização para completar esta ação. Digite qualquer coisa para voltar ao menu.");
     }
 
     private static void reprovaPedido(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         if(usuarioLogado.isAdm() == true){
             PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-            retorno.setStatusDoPedido(0);
-            System.out.println("\nPedido reprovado com sucesso. Digite qualquer coisa para sair.");
-            String saida = in.next();
-            if(saida != null) System.out.println("Saindo.");
+            if(retorno.getStatusDoPedido() == 1){
+                retorno.setStatusDoPedido(0);
+                System.out.println("\nPedido reprovado com sucesso. Digite qualquer coisa para sair.");
+                String saida = in.next();
+                if(saida != null) System.out.println("Saindo.");
+            } else System.out.println("\nNão é possível modificar o status de um pedido uma vez que este já foi modificado. Digite qualquer coisa para sair.");
         } else System.out.println("\nVocê não tem autorização para completar esta ação. Digite qualquer coisa para voltar ao menu.");
     }
 
