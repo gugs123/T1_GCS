@@ -36,14 +36,13 @@ public class ListaDepartUsua {
         double valortotalMes=0;
         for(PedidoAquisicao L: list){
           valortotalMes+=L.getValorTotalPedido();
-      
-        }
+              }
         valortotalMes=valortotalMes/count;
     return valortotalMes;
     }
      public int ultimos30dias(){
 
-        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+        
         int count=0;
         for(PedidoAquisicao l:listaPedidoAquisicao){
             LocalDate dateString = l.getDataDoPedido();
@@ -201,9 +200,50 @@ maior=getPedidoAquisicao(i).getValorTotalPedido();
 
 return aux;
 
-
  }
+// conta a quantidade de pedidos abertos no mes
+public int ContadorCategoriaAberto(){
+     int quantidadeAberto=0;
+for(PedidoAquisicao l:listaPedidoAquisicao){
+    int status=l.getStatusDoPedido();
+    LocalDate dateString = l.getDataDoPedido();
+    LocalDate startDate = dateString;
+    LocalDate endtDate = LocalDate.now();
+    Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+if(range<=30&&status==1){
+        quantidadeAberto++;
+ }}
 
+    return quantidadeAberto;
+}
+//quantidade de pedidos aprovados no mes
+public int ContadorCategoriaComprovada(){
+int quantidadeComprovada=0;
+for(PedidoAquisicao l:listaPedidoAquisicao){
+    int status=l.getStatusDoPedido();
+    LocalDate dateString = l.getDataDoPedido();
+    LocalDate startDate = dateString;
+    LocalDate endtDate = LocalDate.now();
+    Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+if(range<=30&&status==2){
+        quantidadeComprovada++;
+ }}
+    return quantidadeComprovada;
+}
+//conta a quantidade de pedidos concluidos no mes
+public int ContadorCategoriaConcluido(){
+int quantidadeConcluida=0;
+for(PedidoAquisicao l:listaPedidoAquisicao){
+    int status=l.getStatusDoPedido();
+    LocalDate dateString = l.getDataDoPedido();
+    LocalDate startDate = dateString;
+    LocalDate endtDate = LocalDate.now();
+    Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+if(range<=30&&status==3){
+        quantidadeConcluida++;
+ }}
+    return quantidadeConcluida;
+}
     public ArrayList<PedidoAquisicao> getListaPedidosFunc(Usuario usuarioLogado){
         ArrayList<PedidoAquisicao> pedidos = new ArrayList<>();
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
