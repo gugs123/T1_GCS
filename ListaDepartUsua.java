@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class ListaDepartUsua {
     //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
@@ -56,7 +57,7 @@ public class ListaDepartUsua {
         }
         return count;   
     }
-    
+   
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
@@ -172,6 +173,36 @@ public class ListaDepartUsua {
     public int getListaPedidoAquisicaoSize(){
         return this.listaPedidoAquisicao.size();
     }
+ 
+ public String maiorPedidoListado(){
+  String aux="";
+  double maior=0;
+  for(int i=0;i<this.getListaPedidoAquisicaoSize();i++){
+if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
+}
+maior=getPedidoAquisicao(i).getValorTotalPedido();
+    PedidoAquisicao compra = getPedidoAquisicao(i);
+    aux +="\nNÚMERO IDENTIFICADOR: "; aux+=i;
+    aux += ". Data de solicitação: "; aux += compra.getDataDoPedido();
+    if(compra.getQtdItens() > 3) {
+        aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
+        aux += compra.getItensStringShortLimitado(3);
+        aux += ", entre outros";
+    } else {
+        aux += "; Itens: "; aux += compra.getItensStringShort();
+    }
+    aux += "; Valor total: "; aux += compra.getValorTotalPedido();
+    aux += "; Status: "; aux += compra.getStatusString();
+    if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
+        aux += "; Data de conclusão: "; aux += compra.getDataDeConclusao();
+    }
+    aux += ".";
+}
+
+return aux;
+
+
+ }
 
     public ArrayList<PedidoAquisicao> getListaPedidosFunc(Usuario usuarioLogado){
         ArrayList<PedidoAquisicao> pedidos = new ArrayList<>();
@@ -208,7 +239,7 @@ public class ListaDepartUsua {
         }
         return lista;
     }
-
+  
     public String getListaPedidosStatus(int status){
         String lista = "";
 

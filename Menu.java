@@ -306,6 +306,7 @@ public class Menu{
                     }
                     case "5": {
                         // TODO
+                        System.out.println(auxLista.maiorPedidoListado());
                         break;
                     }
                     case "6": {
