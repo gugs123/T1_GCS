@@ -1,21 +1,62 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class ListaDepartUsua {
-
     //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
-
     public ListaDepartUsua() {
-        this.listaUsuarios = new ArrayList<>(15);
-        preencheUsuarios();
-
+      this.listaUsuarios = new ArrayList<>(15);
+       preencheUsuarios();
         this.listaDepartamentos = new ArrayList<>();
-        preencheDepartamentos();
-
+       preencheDepartamentos();
         this.listaPedidoAquisicao = new ArrayList<>();
     }
+    
+    // faz a média dos ultimos 30 dias baseadas nas referencias de LocalDate;
+     
+    public double utlimostrinta(){
+    
+        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+            
+       int count=0;
+        for(PedidoAquisicao i:listaPedidoAquisicao){
+           
+            LocalDate dateString = i.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+              if(range<=30){
+             count++;
+              }
+        }
+        double valortotalMes=0;
+        for(PedidoAquisicao L: list){
+          valortotalMes+=L.getValorTotalPedido();
+      
+        }
+        valortotalMes=valortotalMes/count;
+    return valortotalMes;
+    }
+     public int ultimos30dias(){
+
+        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+        int count=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+         if(range<=30){
+             count++;
+         }
+         
+        }
+        return count;   
+    }
+    
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){

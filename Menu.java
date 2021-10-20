@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.naming.AuthenticationException;
+
 public class Menu{
     public static void main (String[] args){
         //Chama função limpa terminal
