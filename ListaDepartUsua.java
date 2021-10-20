@@ -167,4 +167,30 @@ public class ListaDepartUsua {
         }
         return lista;
     }
+
+    public String getListaPedidosStatus(int status){
+        String lista = "";
+
+        for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
+            if(getPedidoAquisicao(i).getStatusDoPedido() == status){
+                PedidoAquisicao teste = getPedidoAquisicao(i);
+                lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
+                lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
+                if(teste.getQtdItens() > 3) {
+                    lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
+                    lista += teste.getItensStringShortLimitado(3);
+                    lista += ", entre outros";
+                } else {
+                    lista += "; Itens: "; lista += teste.getItensStringShort();
+                }
+                lista += "; Valor total: "; lista += teste.getValorTotalPedido();
+                lista += "; Status: "; lista += teste.getStatusString();
+                if((teste.getStatusDoPedido() != 1) && teste.getDataDeConclusao() != null) {
+                    lista += "; Data de conclusão: "; lista += teste.getDataDeConclusao();
+                }
+                lista += ".";
+            }
+        }
+        return lista;
+    }
 }
