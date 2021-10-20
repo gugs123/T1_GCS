@@ -296,10 +296,12 @@ public class Menu{
                     }   
                     case "3": {
                         //TODO
+                        System.out.println("\n Quantidade de pedidos efetuados nos ultimos 30 dias"+auxLista.ultimos30dias());
+                        System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias"+auxLista.utlimostrinta()+"R$");
                         break;
                     }
                     case "4": {
-                        //TODO
+                        
                         break;
                     }
                     case "5": {
