@@ -353,10 +353,9 @@ public class Menu{
             System.out.println("0 - Não.");
             System.out.println("1 - Ver mais detalhes");
             System.out.println("2 - Deletar pedido");
-            System.out.println("3 - Editar pedido");
             if(usuarioLogado.isAdm() == true){
-                System.out.println("4 - Reprovar pedido");
-                System.out.println("5 - Aprovar pedido");
+                System.out.println("3 - Reprovar pedido");
+                System.out.println("4 - Aprovar pedido");
             }
             int opcaoCase = in.nextInt();
             switch(opcaoCase){
@@ -376,16 +375,11 @@ public class Menu{
                     break;
                 }
                 case 3: {
-                    editar(usuarioLogado, in, idPedido, auxLista);
-                    subLoop = false;
-                    break;
-                }
-                case 4: {
                     reprovaPedido(usuarioLogado, in, idPedido, auxLista);
                     subLoop = false;
                     break;
                 }
-                case 5: {
+                case 4: {
                     aprovaPedido(usuarioLogado, in, idPedido, auxLista);
                     subLoop = false;
                     break;
@@ -505,35 +499,16 @@ public class Menu{
         PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
         if(usuarioLogado == retorno.getUsuarioSolicitante()){
             System.out.println("Você tem certeza que quer deletar este pedido? Esta ação é irreversível.");
-            System.out.println("Não se preocupe. Os números de identificação dos outros pedidos continuarão os mesmos.");
+            System.out.println("Os números de identificação dos outros pedidos mudarão dinamicamente.");
             System.out.println("[0] para CANCELAR\n[1] para CONFIRMAR");
             int opcao = in.nextInt();
             if(opcao == 1){
-                // TO-DO
+                auxLista.getListaPedidoAquisicao().remove(idPedido);
+                System.out.println("Pedido removido com sucesso. Digite qualquer coisa para sair.");
             }
-            else System.out.println("Operação cancelada.");
+            else System.out.println("Operação cancelada. Digite qualquer coisa para sair.");
         }
-        else System.out.println("Desculpe. Você não pode executar esta função.");
-    }
-
-    private static void editar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
-        PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-        if(retorno.getStatusDoPedido() != 1) System.out.println("Desculpe, mas este pedido não pode ser editado.");
-        else {
-            System.out.println("O que gostaria de modificar?\nDigite:");
-            System.out.println("[0] Cancelar\n[1] Itens do pedido");
-            int opcao = in.nextInt();
-            switch(opcao){
-                case 1: {
-                    retorno.getItensString();
-                    System.out.println("Selecione um item.");
-                    // TO-DO
-                }
-                default: {
-                    break;
-                }
-            }
-        }
+        else System.out.println("Desculpe. Você não pode executar esta função. Digite qualquer coisa para sair.");
     }
 
     private static void aprovaPedido(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){

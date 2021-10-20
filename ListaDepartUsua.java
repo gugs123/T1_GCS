@@ -220,8 +220,9 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
-                lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
-                lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
+                lista += "\nNÚMERO ID: "; lista += i;
+                lista += ". Solicitação no dia "; lista += teste.getDataDoPedido();
+                lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();
                 if(teste.getQtdItens() > 3) {
                     lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
                     lista += teste.getItensStringShortLimitado(3);
@@ -246,8 +247,9 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getStatusDoPedido() == status){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
-                lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
-                lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
+                lista += "\nNÚMERO ID: "; lista += i;
+                lista += ". Solicitação no dia "; lista += teste.getDataDoPedido();
+                lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();
                 if(teste.getQtdItens() > 3) {
                     lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
                     lista += teste.getItensStringShortLimitado(3);
