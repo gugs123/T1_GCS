@@ -1,21 +1,63 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class ListaDepartUsua {
-
     //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
-
     public ListaDepartUsua() {
-        this.listaUsuarios = new ArrayList<>(15);
-        preencheUsuarios();
-
+      this.listaUsuarios = new ArrayList<>(15);
+       preencheUsuarios();
         this.listaDepartamentos = new ArrayList<>();
-        preencheDepartamentos();
-
+       preencheDepartamentos();
         this.listaPedidoAquisicao = new ArrayList<>();
     }
+    
+    // faz a média dos ultimos 30 dias baseadas nas referencias de LocalDate;
+     
+    public double utlimostrinta(){
+    
+        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+            
+       int count=0;
+        for(PedidoAquisicao i:listaPedidoAquisicao){
+           
+            LocalDate dateString = i.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+              if(range<=30){
+             count++;
+              }
+        }
+        double valortotalMes=0;
+        for(PedidoAquisicao L: list){
+          valortotalMes+=L.getValorTotalPedido();
+      
+        }
+        valortotalMes=valortotalMes/count;
+    return valortotalMes;
+    }
+     public int ultimos30dias(){
+
+        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
+        int count=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+         if(range<=30){
+             count++;
+         }
+         
+        }
+        return count;   
+    }
+   
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
@@ -131,6 +173,36 @@ public class ListaDepartUsua {
     public int getListaPedidoAquisicaoSize(){
         return this.listaPedidoAquisicao.size();
     }
+ 
+ public String maiorPedidoListado(){
+  String aux="";
+  double maior=0;
+  for(int i=0;i<this.getListaPedidoAquisicaoSize();i++){
+if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
+}
+maior=getPedidoAquisicao(i).getValorTotalPedido();
+    PedidoAquisicao compra = getPedidoAquisicao(i);
+    aux +="\nNÚMERO IDENTIFICADOR: "; aux+=i;
+    aux += ". Data de solicitação: "; aux += compra.getDataDoPedido();
+    if(compra.getQtdItens() > 3) {
+        aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
+        aux += compra.getItensStringShortLimitado(3);
+        aux += ", entre outros";
+    } else {
+        aux += "; Itens: "; aux += compra.getItensStringShort();
+    }
+    aux += "; Valor total: "; aux += compra.getValorTotalPedido();
+    aux += "; Status: "; aux += compra.getStatusString();
+    if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
+        aux += "; Data de conclusão: "; aux += compra.getDataDeConclusao();
+    }
+    aux += ".";
+}
+
+return aux;
+
+
+ }
 
     public ArrayList<PedidoAquisicao> getListaPedidosFunc(Usuario usuarioLogado){
         ArrayList<PedidoAquisicao> pedidos = new ArrayList<>();
@@ -147,6 +219,32 @@ public class ListaDepartUsua {
 
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
+                PedidoAquisicao teste = getPedidoAquisicao(i);
+                lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
+                lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
+                if(teste.getQtdItens() > 3) {
+                    lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
+                    lista += teste.getItensStringShortLimitado(3);
+                    lista += ", entre outros";
+                } else {
+                    lista += "; Itens: "; lista += teste.getItensStringShort();
+                }
+                lista += "; Valor total: "; lista += teste.getValorTotalPedido();
+                lista += "; Status: "; lista += teste.getStatusString();
+                if((teste.getStatusDoPedido() != 1) && teste.getDataDeConclusao() != null) {
+                    lista += "; Data de conclusão: "; lista += teste.getDataDeConclusao();
+                }
+                lista += ".";
+            }
+        }
+        return lista;
+    }
+  
+    public String getListaPedidosStatus(int status){
+        String lista = "";
+
+        for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
+            if(getPedidoAquisicao(i).getStatusDoPedido() == status){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
                 lista += "\nNÚMERO IDENTIFICADOR: "; lista += i;
                 lista += ". Data de solicitação: "; lista += teste.getDataDoPedido();
