@@ -291,7 +291,7 @@ public class Menu{
                         break;
                     }
                     case "2": {
-                        estatisticasADM(usuarioLogado, auxLista, in);
+                        estatisticasPorcentagens(usuarioLogado, auxLista, in);
                         break;
                     }   
                     case "3": {
@@ -452,7 +452,7 @@ public class Menu{
 
     }*/
 
-    private static void estatisticasADM(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
+    private static void estatisticasPorcentagens(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
         int qtdAprov = 0;
         for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
             PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
