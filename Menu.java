@@ -408,23 +408,14 @@ public class Menu{
             }
             case 1:{
                 buscaPorFuncionario(usuarioLogado, auxLista, true);
-                System.out.println("\nDigite qualquer coisa para sair.");
-                String sair = in.next();
-                if(sair != null) break;
                 break;
             }
             case 2:{
                 buscaPorFuncionario(usuarioLogado, auxLista, false);
-                System.out.println("\nDigite qualquer coisa para sair.");
-                String sair = in.next();
-                if(sair != null) break;
                 break;
             }
             case 3:{
                 buscaPorID(usuarioLogado, auxLista);
-                System.out.println("\nDigite qualquer coisa para sair.");
-                String sair = in.next();
-                if(sair != null) break;
                 break;
             }
         }
@@ -479,9 +470,12 @@ public class Menu{
             }
             int total = qtdAprov + qtdReprov + qtdAberto;
             System.out.println("\nHá " + total + " pedido(s) salvos.");
-            System.out.println(((qtdAprov*100.0)/total) + "% são pedidos aprovados.");
-            System.out.println(((qtdReprov*100.0)/total) + "% são pedidos reprovados.");
-            System.out.println(((qtdAberto*100.0)/total) + "% são pedidos em aberto.\n");
+            if(qtdAprov > 0) System.out.println(((qtdAprov*100.0)/total) + "% são pedidos aprovados.");
+                else System.out.println("0 pedidos aprovados.");
+            if(qtdReprov > 0)System.out.println(((qtdReprov*100.0)/total) + "% são pedidos reprovados.");
+                else System.out.println("0 pedidos reprovados.");
+            if(qtdAberto > 0) System.out.println(((qtdAberto*100.0)/total) + "% são pedidos em aberto.\n");
+                else System.out.println("0 pedidos abertos.\n");
 
             boolean subLoopAprov = true;
             boolean subLoopReprov = true;
@@ -512,12 +506,11 @@ public class Menu{
                 } else if (qtdReprov == 0 && subLoopReprov == true) {
                     subLoopReprov = false;
                     System.out.println("Não há pedidos reprovados.");
-                    break;
+                    System.out.println("\nDigite qualquer coisa para continuar.");
+                    String sair = in.next();
+                    if(sair != null) break;
                 }
             }while(subLoopReprov = true);
-            System.out.println("Digite qualquer coisa para sair.");
-            String sair = in.next();
-            if(sair!= null) System.out.println("Saindo");
         } else System.out.println("Erro: você não tem autorização para acessar este menu.");
     }
 
@@ -546,9 +539,9 @@ public class Menu{
                 System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para sair.");
                 int opcao = in.nextInt();
                 if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
-                menuAlteracao(usuarioLogado, in, opcao, auxLista);
-            } else System.out.println("Digite algo de novo.");
-            };
+                    menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                }
+            }
         }
         else if (qtd == 0 && usuarioLogado == pesquisa){ System.out.println("\nVocê ainda não salvou pedido algum. Digite qualquer coisa para sair."); }
         else if (qtd != 0 && usuarioLogado == pesquisa){
@@ -558,10 +551,8 @@ public class Menu{
             int opcao = in.nextInt();
             if(opcao >= 0 && opcao < auxLista.getListaPedidoAquisicaoSize()){
                 menuAlteracao(usuarioLogado, in, opcao, auxLista);
-            } else System.out.println("Digite algo de novo.");
+            }
         }
-        String opcao = in.next();
-        if(opcao != null) System.out.println("Saindo.");
     }
 
     private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
@@ -587,7 +578,7 @@ public class Menu{
                 System.out.println("\nInforme a data de aprovação do pedido.");
                 String dataAprovadoString = in.next();
                 retorno.setStatusDoPedido(2, dataAprovadoString);
-                System.out.println("\nPedido aprovado com sucesso. Você tem 7 dias até a conclusão pré-programada do pedido. Digite qualquer coisa para sair.");
+                System.out.println("\nPedido aprovado com sucesso. Você tem 7 dias até a conclusão pré-programada do pedido. Digite qualquer coisa para continuar.");
                 String saida = in.next();
                 if(saida != null) System.out.println("Saindo.");
             } else System.out.println("\nNão é possível modificar o status de um pedido uma vez que este já foi modificado. Digite qualquer coisa para sair.");
@@ -599,7 +590,7 @@ public class Menu{
             PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
             if(retorno.getStatusDoPedido() == 1){
                 retorno.setStatusDoPedido(0);
-                System.out.println("\nPedido reprovado com sucesso. Digite qualquer coisa para sair.");
+                System.out.println("\nPedido reprovado com sucesso. Digite qualquer coisa para continuar.");
                 String saida = in.next();
                 if(saida != null) System.out.println("Saindo.");
             } else System.out.println("\nNão é possível modificar o status de um pedido uma vez que este já foi modificado. Digite qualquer coisa para sair.");
