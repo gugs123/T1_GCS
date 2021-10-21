@@ -1,10 +1,13 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
 import javax.naming.AuthenticationException;
 
 public class Menu{
@@ -39,6 +42,7 @@ public class Menu{
         {}
     }  
 
+    //menu inicial
     public static Usuario Menu(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean sair){
         Scanner in = new Scanner(System.in);
         String opcao = "";
@@ -50,7 +54,7 @@ public class Menu{
         System.out.println("*STANLEY* - Sistema de Controle de Aquisicao");
         System.out.println("1 - Alterar usuario");
         System.out.println("2 - Criar um pedido");
-        System.out.println("3 - Buscar pedido");
+        System.out.println("3 - Buscar seus pedidos");
         System.out.println("4 - Painel Admistrador");
         System.out.println("9 - Sair"); 
         System.out.print("Opcao: ");
@@ -59,23 +63,21 @@ public class Menu{
         switch(opcao)
         {
             case "1":
-            {
                 return usuarioLogado = Login(auxLista);
-            }
+                break;
             case "2":
-            {
                 //Pega um departamento a partir de uma String(nome do departamento) de um usuário
                 Departamento departamentoUsu = auxLista.buscaPorDepartamento(usuarioLogado.getDepartamento());
                 //if(criarPedido(usuarioLogado, in, departamentoUsu, auxLista) == usuarioLogado) System.out.println("Pedido adicionado com sucesso.");
                 return criarPedido(usuarioLogado, in, departamentoUsu, auxLista);
-            }
+                break;
+
             case "3":
-            {
-                LimpaTela();
-                busca(usuarioLogado, auxLista, in);
-            }
+                //busca de funcionarios e ADM
+                buscaPorFuncionario(usuarioLogado, auxLista, true);
+                break;
+            
             case "4":
-            {
                 Usuario aux = usuarioLogado;
                 usuarioLogado = ADM(auxLista, usuarioLogado, auxLista);
                 if(usuarioLogado==null)
@@ -89,15 +91,11 @@ public class Menu{
                 {
                     return usuarioLogado;
                 }
-            }
+            
+
             case "9":
             {
                 System.exit(0);
-            }
-
-            case "5":
-            {
-                
             }
             default:
             {
@@ -109,6 +107,62 @@ public class Menu{
         }
         return usuarioLogado;
     }
+
+    //Painel do ADM
+    public static void menuADM(Usuario usuarioLogado, ListaDepartUsua auxLista) {
+
+            
+        boolean sair = false;
+        while(sair==false)
+        {
+            LimpaTela();
+            System.out.println("\nMenu Admimistrador");
+            System.out.println("1- Avaliar pedido em aberto");
+            System.out.println("2- Estatistica de pedidos totais");
+            System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
+            System.out.println("4- Valor total de cada categoria dos ultimos 30 dias");            
+            System.out.println("5- Detalhes do pedido de maior valor ainda em aberto");            
+            System.out.println("6- Sair do menu ADM");            
+            System.out.print("Opcao: ");
+            Scanner in = new Scanner(System.in);
+            String opcao = in.nextLine();
+            switch(opcao)
+            {
+                case "1": {
+                    buscaDoADM(usuarioLogado, auxLista, in);
+                    break;
+                }
+                case "2": {
+                    estatisticasPorcentagens(usuarioLogado, auxLista, in);
+                    break;
+                }   
+                case "3": {
+                    //TODO
+                    System.out.println("\n Quantidade de pedidos efetuados nos ultimos 30 dias"+auxLista.ultimos30dias());
+                    System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias"+auxLista.utlimostrinta()+"R$");
+                    break;
+                }
+                case "4": {
+                    
+                    break;
+                }
+                case "5": {
+                    // TODO
+                    System.out.println(auxLista.maiorPedidoListado());
+                    break;
+                }
+                case "6": {
+                    sair = true;
+                    break;
+                }
+                default: {
+                    LimpaTela();
+                    System.out.println("Opção inválida !");
+                    in.nextLine();
+                }
+            }
+        }
+}
 
     public static Usuario Login(ListaDepartUsua users)
     {
@@ -282,95 +336,7 @@ public class Menu{
         
     }
 
-
-    public static void menuADM(Usuario usuarioLogado, ListaDepartUsua auxLista) {
-
-            
-            boolean sair = false;
-            while(sair==false)
-            {
-                LimpaTela();
-                System.out.println("\nMenu Admimistrador");
-                System.out.println("1- Avaliar pedido em aberto");
-                System.out.println("2- Estatistica de pedidos totais");
-                System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
-                System.out.println("4- Valor total de cada categoria dos ultimos 30 dias");            
-                System.out.println("5- Detalhes do pedido de maior valor ainda em aberto");            
-                System.out.println("6- Sair do menu ADM");            
-                System.out.print("Opcao: ");
-                Scanner in = new Scanner(System.in);
-                String opcao = in.nextLine();
-                switch(opcao)
-                {
-                    case "1": {
-                        buscaPorStatus(usuarioLogado, in, 1, auxLista);
-                        break;
-                    }
-                    case "2": {
-                        estatisticasPorcentagens(usuarioLogado, auxLista, in);
-                        break;
-                    }   
-                    case "3": {
-                        //TODO
-                        System.out.println("\n Quantidade de pedidos efetuados nos ultimos 30 dias"+auxLista.ultimos30dias());
-                        System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias"+auxLista.utlimostrinta()+"R$");
-                        break;
-                    }
-                    case "4": {
-                        
-                        break;
-                    }
-                    case "5": {
-                        // TODO
-                        System.out.println(auxLista.maiorPedidoListado());
-                        break;
-                    }
-                    case "6": {
-                        sair = true;
-                        break;
-                    }
-                    default: {
-                        LimpaTela();
-                        System.out.println("Opção inválida !");
-                        in.nextLine();
-                    }
-                }
-            }
-    }
-
-    public static void buscaPorID(Usuario usuarioLogado, ListaDepartUsua auxLista){
-        
-        Scanner in = new Scanner(System.in);
-        boolean subLoop = true;
-            if(auxLista.getListaPedidoAquisicaoSize() == 0) {
-                LimpaTela();
-                System.out.print("\nNão ha pedidos salvos na sua lista.\nDigite qualquer coisa para voltar ao menu principal: ");
-                String input = in.next();
-                if(input != null) subLoop = false;
-            }
-            else {do{
-                LimpaTela();
-                System.out.print("\nDigite o numero de identificacao do pedido que gostaria de ver. Digite -1 para sair: ");
-                int idPedido = in.nextInt();
-                    if(idPedido == -1) {subLoop = false; break;}
-
-                if(idPedido < auxLista.getListaPedidoAquisicaoSize()) {
-                    System.out.println("\n---------------------------------------------------------");
-                    PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
-                    System.out.println(retorno.pedidoToString(idPedido));
-                    System.out.println("---------------------------------------------------------\n");
-                }
-                else {
-                        LimpaTela(); 
-                        System.out.print("\nNao ha pedido com este numero de identificacao: ");
-                        break;
-                    }
-
-                menuAlteracao(usuarioLogado, in, idPedido, auxLista);
-
-        }while(subLoop == true);}
-    }
-
+    //???????????
     public static void menuAlteracao(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         boolean subLoop = true;
         do{
@@ -418,57 +384,10 @@ public class Menu{
             }
         }while(subLoop == true); 
     }
+ 
 
-    private static void busca(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
-        boolean exit = false;
-        System.out.println("Menu de busca \n");
-        System.out.println("[1] Ver todos os meus pedidos\n[2] Procurar pedidos por funcionario\n[3] Procurar pedidos por numero de identificacao\n[4] Procurar pedidos por itens inclusos\n[0] Voltar");
-        System.out.print("\nDigite uma opcao: ");
-        int opcao = in.nextInt();
-        switch(opcao){
-            case 0:{
+    
 
-                usuarioLogado = Menu(usuarioLogado, auxLista, exit);
-                break;
-            }
-            case 1:{
-                buscaPorFuncionario(usuarioLogado, auxLista, true);
-                break;
-            }
-            case 2:{
-                buscaPorFuncionario(usuarioLogado, auxLista, false);
-                break;
-            }
-            case 3:{
-                buscaPorID(usuarioLogado, auxLista);
-                break;
-            }
-        }
-    }
-
-    // MÉTODO OBSOLETO, MAS DEIXADO AQUI CASO O buscaPorFuncionario QUEBRE
-    /*private static void buscaMeusPedidos(Usuario usuarioLogado, ListaDepartUsua auxLista){
-        Scanner in = new Scanner(System.in);
-        int qtd = 0;
-        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
-            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
-            if(teste.getUsuarioSolicitante() == usuarioLogado) { 
-                qtd++;
-            }
-        }
-        if(qtd == 0) System.out.println("\nVocê ainda não salvou pedido algum.");
-        else {
-            System.out.println("\nVocê salvou " + qtd + " pedidos.");
-            System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
-        }
-        
-        System.out.println("Selecionar algum pedido? Inserir o número para selecionar, ou -1 para sair.");
-        int opcao = in.nextInt();
-        if(opcao >= 0 && opcao < auxLista.getListaPedidosFunc(usuarioLogado).size()){
-            menuAlteracao(usuarioLogado, in, opcao, auxLista);
-        } else System.out.println("Saindo.");
-
-    }*/
 
     private static void estatisticasPorcentagens(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
         if(usuarioLogado.isAdm() == true){
@@ -541,54 +460,8 @@ public class Menu{
         in.nextInt();
     }
 
-    private static void buscaPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean self){
-        Scanner in = new Scanner(System.in);
-        int qtd = 0;
-        String matricula = "";
-        if(self == false) {
-            LimpaTela();
-            System.out.print("\nInforme a matricula do funcionario cujos pedidos voce quer ver: ");
-            matricula = in.next();
-        } else matricula = usuarioLogado.getMatricula();
-        Usuario pesquisa = auxLista.buscaPorMatricula(matricula);
-        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
-            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
-            Usuario solicitante = teste.getUsuarioSolicitante();
-            if(solicitante == pesquisa) { 
-                qtd++;
-            }
-        }
-        
-        if(qtd == 0 && usuarioLogado != pesquisa) {
-            System.out.println("\nNao ha pedidos salvos por este funcionario. Digite 0 para retornar ao Menu: ");
-            in.nextInt();
-        }
-        else if (qtd != 0 && usuarioLogado != pesquisa){
-            System.out.println("\nEste usuário salvou " + qtd + " pedidos.");
-            System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
-            LimpaTela();
-            if(usuarioLogado.isAdm() == false)System.out.println("\nVoce nao pode modificar os pedidos de outros usuarios, apenas pode ve-los. Digite qualquer coisa para sair.");
-            else {
-                System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
-                int opcao = in.nextInt();
-                if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
-                    menuAlteracao(usuarioLogado, in, opcao, auxLista);
-                }
-            }
-        }
-        else if (qtd == 0 && usuarioLogado == pesquisa){ LimpaTela(); System.out.print("\nNenhum pedido cadastrado, digite 0 para retornar: "); in.nextInt();}
-        else if (qtd != 0 && usuarioLogado == pesquisa){
-            LimpaTela();
-            System.out.println("\nVoce salvou " + qtd + " pedidos.");
-            System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
-            System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
-            int opcao = in.nextInt();
-            if(opcao >= 0 && opcao < auxLista.getListaPedidoAquisicaoSize()){
-                menuAlteracao(usuarioLogado, in, opcao, auxLista);
-            }
-        }
-    }
-
+   
+    //aprovar, deletar, reprovar pedido
     private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
         if(usuarioLogado == retorno.getUsuarioSolicitante()){
@@ -636,6 +509,116 @@ public class Menu{
         } else System.out.println("\nVoce não tem autorizacao para completar esta acao. Digite qualquer coisa para voltar ao menu.");
     }
 
+    
+
+    //inicio da parte de buscas
+    public static ArrayList<PedidoAquisicao> BuscarStatus(ListaDepartUsua auxLista){
+        ArrayList<PedidoAquisicao> listaEmAberto = new ArrayList<>();
+
+        for(PedidoAquisicao x: auxLista.getListaPedidoAquisicao()){
+            if(x.getStatusDoPedido() == 1){
+                listaEmAberto.add(x);
+            }
+        }
+        return listaEmAberto;
+    }
+
+
+    public static void BuscaEntreDatas(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        Scanner in = new Scanner(System.in);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        ArrayList<PedidoAquisicao> listaDatas = new ArrayList<>();
+        boolean test = false;
+        if(usuarioLogado.isAdm() == true){
+            if(auxLista.getListaPedidoAquisicaoSize() > 0){
+                do{ 
+                    test = false;
+                    try{
+                        System.out.println("Digite a inicia data: ");
+                        Date dataI = sdf.parse(in.next());
+
+                        System.out.println("Digite a final data: ");
+                        Date dataF = sdf.parse(in.next());
+                        in.close();
+
+                        long dInicial = dataI.getTime();
+                        long dFinal = dataF.getTime();
+                        long data;
+
+                        for(PedidoAquisicao x: BuscarStatus(auxLista)){
+                            data = Date.from(x.getDataDoPedido().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime();
+                            if(data >= dInicial & data <= dFinal){
+                                listaDatas.add(x);
+                            }
+                        }
+                        
+                        for(PedidoAquisicao x: listaDatas){
+                            System.out.println(x);
+                        }
+
+                    } catch(ParseException e){
+                        test = true;
+                    }
+                }while(test);
+            }
+        } else{
+            System.out.println("So ADM podem buscar pedidos");
+        }
+    }
+
+
+    private static void buscarPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        ArrayList<PedidoAquisicao> lista = new ArrayList<>();
+
+        if(usuarioLogado.isAdm() == true){
+            if(auxLista.getListaPedidoAquisicaoSize() > 0){
+                for(PedidoAquisicao x: BuscarStatus(auxLista)){
+                    if(x.getUsuarioSolicitante() == usuarioLogado){
+                        lista.add(x);
+                    }
+                }
+            }
+            for(PedidoAquisicao x: lista){
+                System.out.println(x);
+            }
+        } else{
+            System.out.println("So ADM podem buscar pedidos");
+        }
+    }
+
+
+    public static void BuscaPorDescricao(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        Scanner in = new Scanner(System.in);
+        ArrayList<PedidoAquisicao> buscaDescricao = new ArrayList<>();
+        String descricaoItem;
+        int aux = -1;
+
+
+
+        System.out.print("Digite da Descrição do item que procura: ");
+        descricaoItem = in.nextLine();
+        System.out.println();
+
+        if(usuarioLogado.isAdm() == true){
+            if(BuscarStatus(auxLista).size() > 0){
+                for(PedidoAquisicao x: BuscarStatus(auxLista)){
+                    for(Item y: x.getListaItem()){
+                        aux = y.getDescricaoItem().indexOf(descricaoItem);
+                        if(aux == 0){
+                            buscaDescricao.add(x);
+                        }
+                    }
+                }
+                for(PedidoAquisicao x: buscaDescricao){
+                    System.out.println(x);
+                }
+            }
+        } else{
+            System.out.println("So ADM podem buscar pedidos");
+        }
+        
+    }
+
     private static void buscaPorStatus(Usuario usuarioLogado, Scanner in, int status, ListaDepartUsua auxLista){
         int qtd = 0;
         for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
@@ -656,6 +639,172 @@ public class Menu{
                 if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
                 menuAlteracao(usuarioLogado, in, opcao, auxLista);
             } else System.out.println("Saindo");
+        }
+    }
+    //fim da busca por ADM
+
+
+
+    // public static void buscaPorID(Usuario usuarioLogado, ListaDepartUsua auxLista){
+            
+    //     Scanner in = new Scanner(System.in);
+    //     boolean subLoop = true;
+    //         if(auxLista.getListaPedidoAquisicaoSize() == 0) {
+    //             LimpaTela();
+    //             System.out.print("\nNão ha pedidos salvos na sua lista.\nDigite qualquer coisa para voltar ao menu principal: ");
+    //             String input = in.next();
+    //             if(input != null) subLoop = false;
+    //         }
+    //         else {do{
+    //             LimpaTela();
+    //             System.out.print("\nDigite o numero de identificacao do pedido que gostaria de ver. Digite -1 para sair: ");
+    //             int idPedido = in.nextInt();
+    //                 if(idPedido == -1) {subLoop = false; break;}
+
+    //             if(idPedido < auxLista.getListaPedidoAquisicaoSize()) {
+    //                 System.out.println("\n---------------------------------------------------------");
+    //                 PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
+    //                 System.out.println(retorno.pedidoToString(idPedido));
+    //                 System.out.println("---------------------------------------------------------\n");
+    //             }
+    //             else {
+    //                     LimpaTela(); 
+    //                     System.out.print("\nNao ha pedido com este numero de identificacao: ");
+    //                     break;
+    //                 }
+
+    //             menuAlteracao(usuarioLogado, in, idPedido, auxLista);
+
+    //         }while(subLoop == true);
+    //     }
+    // }
+
+
+    // MÉTODO OBSOLETO, MAS DEIXADO AQUI CASO O buscaPorFuncionario QUEBRE
+    // private static void buscaMeusPedidos(Usuario usuarioLogado, ListaDepartUsua auxLista){
+    //     Scanner in = new Scanner(System.in);
+    //     int qtd = 0;
+    //     for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+    //         PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+    //         if(teste.getUsuarioSolicitante() == usuarioLogado) { 
+    //             qtd++;
+    //         }
+    //     }
+    //     if(qtd == 0) System.out.println("\nVocê ainda não salvou pedido algum.");
+    //     else {
+    //         System.out.println("\nVocê salvou " + qtd + " pedidos.");
+    //         System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
+    //     }
+        
+    //     System.out.println("Selecionar algum pedido? Inserir o número para selecionar, ou -1 para sair.");
+    //     int opcao = in.nextInt();
+    //     if(opcao >= 0 && opcao < auxLista.getListaPedidosFunc(usuarioLogado).size()){
+    //         menuAlteracao(usuarioLogado, in, opcao, auxLista);
+    //     } else System.out.println("Saindo.");
+
+    // }
+
+    //busca dos funcionarios e ADM
+    private static void buscaPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean self){
+        Scanner in = new Scanner(System.in);
+        int qtd = 0;
+        String matricula = "";
+        if(self == false) {
+            LimpaTela();
+            System.out.print("\nInforme a matricula do funcionario cujos pedidos voce quer ver: ");
+            matricula = in.next();
+        } else matricula = usuarioLogado.getMatricula();
+            Usuario pesquisa = auxLista.buscaPorMatricula(matricula);
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                Usuario solicitante = teste.getUsuarioSolicitante();
+            if(solicitante == pesquisa) { 
+                qtd++;
+            }
+        }
+        
+        if(qtd == 0 && usuarioLogado != pesquisa) {
+            System.out.println("\nNao ha pedidos salvos por este funcionario. Digite 0 para retornar ao Menu: ");
+            in.nextInt();
+        }
+        else if (qtd != 0 && usuarioLogado != pesquisa){
+            System.out.println("\nEste usuário salvou " + qtd + " pedidos.");
+            System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
+            LimpaTela();
+            if(usuarioLogado.isAdm() == false)System.out.println("\nVoce nao pode modificar os pedidos de outros usuarios, apenas pode ve-los. Digite qualquer coisa para sair.");
+            else {
+                System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
+                int opcao = in.nextInt();
+                if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                    menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                }
+            }
+        }
+        else if (qtd == 0 && usuarioLogado == pesquisa){ LimpaTela(); System.out.print("\nNenhum pedido cadastrado, digite 0 para retornar: "); in.nextInt();}
+        else if (qtd != 0 && usuarioLogado == pesquisa){
+            LimpaTela();
+            System.out.println("\nVoce salvou " + qtd + " pedidos.");
+            System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
+            System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
+            int opcao = in.nextInt();
+            if(opcao >= 0 && opcao < auxLista.getListaPedidoAquisicaoSize()){
+                menuAlteracao(usuarioLogado, in, opcao, auxLista);
+            }
+        }
+    }
+
+    //Menu de busca do ADM
+    private static void buscaDoADM(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
+        boolean exit = false;
+        System.out.println("Menu de busca \n");
+        System.out.println("[1] Buscar pedidos entre duas datas.");
+        System.out.println("[2] Buscar pedidos por funcionario.");
+        System.out.println("[3] Buscar pedidos pela descrição dos itens.");
+        System.out.println("[4] Visualizar pedidos por Status");
+        System.out.println("[5] Voltar.");
+        System.out.print("\nDigite uma opcao: ");
+        int opcao = in.nextInt();
+
+        while(opcao > 5 || opcao < 0){
+            System.out.println("Digite uma opção valida:");
+            opcao = in.nextInt();
+            System.out.println();
+        }
+        
+        switch(opcao){
+            case 0:
+                usuarioLogado = Menu(usuarioLogado, auxLista, exit);
+                break;
+
+            case 1:
+                BuscaEntreDatas(usuarioLogado, auxLista);
+                break;
+                
+            case 2:
+                buscarPorFuncionario(usuarioLogado, auxLista);
+                break;
+
+            case 3:
+                BuscaPorDescricao(usuarioLogado, auxLista);
+                break;
+
+            case 4:
+                System.out.println("Escolha um dos Status\n");
+                System.out.println("[0] Pedidos reprovados.");
+                System.out.println("[1] Pedidos abertos.");
+                System.out.println("[2] Pedidos Aprovados.");
+                System.out.print("[3] Pedidos Concluidos.");
+
+                int escolha = in.nextInt();
+                System.out.println();
+
+                while(escolha > 3 || escolha < 0){
+                    System.out.println("Digite uma opção valida:");
+                    escolha = in.nextInt();
+                    System.out.println();
+                }
+                buscaPorStatus(usuarioLogado, in, escolha, auxLista);
+            
         }
     }
 }

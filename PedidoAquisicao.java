@@ -71,6 +71,10 @@ public class PedidoAquisicao {
         return statusDoPedido;
     }
 
+    public ArrayList<Item> getListaItem(){
+        return this.listaItens;
+    }
+
     public String getStatusString(){
         if(statusDoPedido == 0) return "foi reprovado";
         else if(statusDoPedido == 1) return "esta em aberto";
