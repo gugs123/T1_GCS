@@ -28,7 +28,6 @@ public class Menu{
         {
             final String os = System.getProperty("os.name");
             if (os.contains("Windows")){
-                Runtime.getRuntime().exec("cls");
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             }
             else{
@@ -72,6 +71,7 @@ public class Menu{
             }
             case "3":
             {
+                LimpaTela();
                 busca(usuarioLogado, auxLista, in);
             }
             case "4":
@@ -321,6 +321,7 @@ public class Menu{
     }
 
     public static void buscaPorID(Usuario usuarioLogado, ListaDepartUsua auxLista){
+        
         Scanner in = new Scanner(System.in);
         boolean subLoop = true;
             if(auxLista.getListaPedidoAquisicaoSize() == 0) {
@@ -394,14 +395,15 @@ public class Menu{
     }
 
     private static void busca(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
+        boolean exit = false;
         System.out.println("\nMenu de busca");
-        System.out.println("[0] Cancelar\n[1] Ver todos os meus pedidos\n[2] Procurar pedidos por funcionário\n[3] Procurar pedidos por número de identificação\n[4] Procurar pedidos por itens inclusos");
+        System.out.println("[1] Ver todos os meus pedidos\n[2] Procurar pedidos por funcionário\n[3] Procurar pedidos por número de identificação\n[4] Procurar pedidos por itens inclusos\n[0] Voltar");
+        System.out.print("Digite uma opção: ");
         int opcao = in.nextInt();
         switch(opcao){
             case 0:{
-                System.out.println("\nDigite qualquer coisa para sair.");
-                String sair = in.next();
-                if(sair != null) break;
+
+                usuarioLogado = Menu(usuarioLogado, auxLista, exit);
                 break;
             }
             case 1:{
