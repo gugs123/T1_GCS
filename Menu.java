@@ -453,54 +453,70 @@ public class Menu{
     }*/
 
     private static void estatisticasPorcentagens(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
-        int qtdAprov = 0;
-        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
-            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
-            if(teste.getStatusDoPedido() == 3) { 
-                qtdAprov++;
+        if(usuarioLogado.isAdm() == true){
+            int qtdAprov = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 3) { 
+                    qtdAprov++;
+                }
             }
-        }
-        int qtdReprov = 0;
-        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
-            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
-            if(teste.getStatusDoPedido() == 0) { 
-                qtdReprov++;
+            int qtdReprov = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 0) { 
+                    qtdReprov++;
+                }
             }
-        }
-        int qtdAberto = 0;
-        for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
-            PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
-            if(teste.getStatusDoPedido() == 1) { 
-                qtdAberto++;
+            int qtdAberto = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 1) { 
+                    qtdAberto++;
+                }
             }
-        }
-        int total = qtdAprov + qtdReprov + qtdAberto;
-        System.out.println("\nHá " + total + " pedido(s) salvos.");
-        System.out.println(((qtdAprov*100.0)/total) + "% são pedidos aprovados.");
-        System.out.println(((qtdReprov*100.0)/total) + "% são pedidos reprovados.");
-        System.out.println(((qtdAberto*100.0)/total) + "% são pedidos em aberto.\n");
+            int total = qtdAprov + qtdReprov + qtdAberto;
+            System.out.println("\nHá " + total + " pedido(s) salvos.");
+            System.out.println(((qtdAprov*100.0)/total) + "% são pedidos aprovados.");
+            System.out.println(((qtdReprov*100.0)/total) + "% são pedidos reprovados.");
+            System.out.println(((qtdAberto*100.0)/total) + "% são pedidos em aberto.\n");
 
-        if(qtdAprov > 0) {
-            System.out.println("\nPedidos aprovados:");
-            System.out.println(auxLista.getListaPedidosStatus(3));
-            System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para ver os pedidos REPROVADOS.");
-            int opcao = in.nextInt();
-            if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
-                menuAlteracao(usuarioLogado, in, opcao, auxLista);
-            }
-        } else System.out.println("Não há pedidos aprovados.");
-        if(qtdReprov > 0) {
-            System.out.println("\nPedidos reprovados:");
-            System.out.println(auxLista.getListaPedidosStatus(0));
-            System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para SAIR.");
-            int opcao = in.nextInt();
-            if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
-                menuAlteracao(usuarioLogado, in, opcao, auxLista);
-            } else System.out.println("Saindo.");
-        } else System.out.println("Não há pedidos reprovados.");
-        System.out.println("Digite qualquer coisa para sair.");
-        String sair = in.next();
-        if(sair!= null) System.out.println("Saindo");
+            boolean subLoopAprov = true;
+            boolean subLoopReprov = true;
+            do{
+                if(qtdAprov > 0 && subLoopAprov == true) {
+                    System.out.println("\nPedidos aprovados:");
+                    System.out.println(auxLista.getListaPedidosStatus(3));
+                    System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para ver os pedidos REPROVADOS.");
+                    int opcao = in.nextInt();
+                    if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                        menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                    } else { subLoopAprov = false; break; }
+                } else if (qtdAprov == 0 && subLoopAprov == true) {
+                    subLoopAprov = false;
+                    System.out.println("Não há pedidos aprovados.");
+                    break;
+                }
+            }while(subLoopAprov = true); 
+            do{
+                if(qtdReprov > 0 && subLoopReprov == true) {
+                    System.out.println("\nPedidos reprovados:");
+                    System.out.println(auxLista.getListaPedidosStatus(0));
+                    System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para SAIR.");
+                    int opcao = in.nextInt();
+                    if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                        menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                    } else {subLoopReprov = false; System.out.println("Saindo."); break;}
+                } else if (qtdReprov == 0 && subLoopReprov == true) {
+                    subLoopReprov = false;
+                    System.out.println("Não há pedidos reprovados.");
+                    break;
+                }
+            }while(subLoopReprov = true);
+            System.out.println("Digite qualquer coisa para sair.");
+            String sair = in.next();
+            if(sair!= null) System.out.println("Saindo");
+        } else System.out.println("Erro: você não tem autorização para acessar este menu.");
     }
 
     private static void buscaPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean self){
