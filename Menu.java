@@ -291,7 +291,7 @@ public class Menu{
                         break;
                     }
                     case "2": {
-                        //TODO
+                        estatisticasPorcentagens(usuarioLogado, auxLista, in);
                         break;
                     }   
                     case "3": {
@@ -454,6 +454,73 @@ public class Menu{
 
     }*/
 
+    private static void estatisticasPorcentagens(Usuario usuarioLogado, ListaDepartUsua auxLista, Scanner in){
+        if(usuarioLogado.isAdm() == true){
+            int qtdAprov = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 3) { 
+                    qtdAprov++;
+                }
+            }
+            int qtdReprov = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 0) { 
+                    qtdReprov++;
+                }
+            }
+            int qtdAberto = 0;
+            for(int i = 0; i < auxLista.getListaPedidoAquisicaoSize(); i++){
+                PedidoAquisicao teste = auxLista.getPedidoAquisicao(i);
+                if(teste.getStatusDoPedido() == 1) { 
+                    qtdAberto++;
+                }
+            }
+            int total = qtdAprov + qtdReprov + qtdAberto;
+            System.out.println("\nHá " + total + " pedido(s) salvos.");
+            System.out.println(((qtdAprov*100.0)/total) + "% são pedidos aprovados.");
+            System.out.println(((qtdReprov*100.0)/total) + "% são pedidos reprovados.");
+            System.out.println(((qtdAberto*100.0)/total) + "% são pedidos em aberto.\n");
+
+            boolean subLoopAprov = true;
+            boolean subLoopReprov = true;
+            do{
+                if(qtdAprov > 0 && subLoopAprov == true) {
+                    System.out.println("\nPedidos aprovados:");
+                    System.out.println(auxLista.getListaPedidosStatus(3));
+                    System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para ver os pedidos REPROVADOS.");
+                    int opcao = in.nextInt();
+                    if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                        menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                    } else { subLoopAprov = false; break; }
+                } else if (qtdAprov == 0 && subLoopAprov == true) {
+                    subLoopAprov = false;
+                    System.out.println("Não há pedidos aprovados.");
+                    break;
+                }
+            }while(subLoopAprov = true); 
+            do{
+                if(qtdReprov > 0 && subLoopReprov == true) {
+                    System.out.println("\nPedidos reprovados:");
+                    System.out.println(auxLista.getListaPedidosStatus(0));
+                    System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para SAIR.");
+                    int opcao = in.nextInt();
+                    if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
+                        menuAlteracao(usuarioLogado, in, opcao, auxLista);
+                    } else {subLoopReprov = false; System.out.println("Saindo."); break;}
+                } else if (qtdReprov == 0 && subLoopReprov == true) {
+                    subLoopReprov = false;
+                    System.out.println("Não há pedidos reprovados.");
+                    break;
+                }
+            }while(subLoopReprov = true);
+            System.out.println("Digite qualquer coisa para sair.");
+            String sair = in.next();
+            if(sair!= null) System.out.println("Saindo");
+        } else System.out.println("Erro: você não tem autorização para acessar este menu.");
+    }
+
     private static void buscaPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista, boolean self){
         Scanner in = new Scanner(System.in);
         int qtd = 0;
@@ -547,11 +614,11 @@ public class Menu{
                 qtd++;
             }
         } if(qtd == 0){
-            System.out.println("Não há pedidos com este salvos status atualmente. Digite qualquer coisa para sair.");
-            String saida = in.next();
-            if(saida != null) System.out.println("Saindo.");
+            System.out.println("Não há pedidos com este salvos status atualmente. Digite qualquer coisa para continuar.");
+            String sair = in.next();
+            if(sair != null) System.out.println("Saindo.");
         } else {
-            System.out.println("\nPedidos em aberto:");
+            System.out.println("Há " + qtd + " pedidos salvos com este status:");
             System.out.println(auxLista.getListaPedidosStatus(status));
             System.out.println("\nSelecionar algum pedido? Inserir o NÚMERO IDENTIFICADOR para selecionar, ou -1 para sair.");
                 int opcao = in.nextInt();
