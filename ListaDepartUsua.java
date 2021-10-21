@@ -182,8 +182,8 @@ if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
 }
 maior=getPedidoAquisicao(i).getValorTotalPedido();
     PedidoAquisicao compra = getPedidoAquisicao(i);
-    aux +="\nNÚMERO IDENTIFICADOR: "; aux+=i;
-    aux += ". Data de solicitação: "; aux += compra.getDataDoPedido();
+    aux +="\nNUMERO IDENTIFICADOR: "; aux+=i;
+    aux += ". Data de solicitaçao: "; aux += compra.getDataDoPedido();
     if(compra.getQtdItens() > 3) {
         aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
         aux += compra.getItensStringShortLimitado(3);
@@ -194,7 +194,7 @@ maior=getPedidoAquisicao(i).getValorTotalPedido();
     aux += "; Valor total: "; aux += compra.getValorTotalPedido();
     aux += "; Status: "; aux += compra.getStatusString();
     if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
-        aux += "; Data de conclusão: "; aux += compra.getDataDeConclusao();
+        aux += "; Data de conclusao: "; aux += compra.getDataDeConclusao();
     }
     aux += ".";
 }
@@ -220,8 +220,8 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
-                lista += "\nNÚMERO ID: "; lista += i;
-                lista += ". Solicitação no dia "; lista += teste.getDataDoPedido();
+                lista += "\nNUMERO ID: "; lista += i;
+                lista += ". Solicitacao no dia "; lista += teste.getDataDoPedido();
                 lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();
                 if(teste.getQtdItens() > 3) {
                     lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
@@ -233,7 +233,7 @@ return aux;
                 lista += "; Valor total: "; lista += teste.getValorTotalPedido();
                 lista += "; Status: "; lista += teste.getStatusString();
                 if((teste.getStatusDoPedido() != 1) && teste.getDataDeConclusao() != null) {
-                    lista += "; Data de conclusão: "; lista += teste.getDataDeConclusao();
+                    lista += "; Data de conclusao: "; lista += teste.getDataDeConclusao();
                 }
                 lista += ".";
             }
@@ -247,8 +247,8 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getStatusDoPedido() == status){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
-                lista += "\nNÚMERO ID: "; lista += i;
-                lista += ". Solicitação no dia "; lista += teste.getDataDoPedido();
+                lista += "\nNUMERO ID: "; lista += i;
+                lista += ". Solicitaçao no dia "; lista += teste.getDataDoPedido();
                 lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();
                 if(teste.getQtdItens() > 3) {
                     lista += "; "; lista += teste.getQtdItens(); lista += " itens: ";
@@ -260,7 +260,7 @@ return aux;
                 lista += "; Valor total: "; lista += teste.getValorTotalPedido();
                 lista += "; Status: "; lista += teste.getStatusString();
                 if((teste.getStatusDoPedido() != 1) && teste.getDataDeConclusao() != null) {
-                    lista += "; Data de conclusão: "; lista += teste.getDataDeConclusao();
+                    lista += "; Data de conclusao: "; lista += teste.getDataDeConclusao();
                 }
                 lista += ".";
             }

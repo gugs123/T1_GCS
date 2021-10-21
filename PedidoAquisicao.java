@@ -21,6 +21,22 @@ public class PedidoAquisicao {
     // statusDoPedido = 2 --> aprovado
     // statusDoPedido = 3 --> concluído
 
+    public static void LimpaTela(){
+        try
+        {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+            else{
+                System.out.print("\033[H\033[2J");  
+                System.out.flush();
+            }
+        }
+        catch (final Exception e )
+        {}
+    }  
+
     public PedidoAquisicao(Usuario usuarioSolicitante, Departamento departamentoSolicitante, LocalDate dataDoPedido, ArrayList<Item> listaItens) {
         this.usuarioSolicitante = usuarioSolicitante;
         this.departamentoSolicitante = departamentoSolicitante;
@@ -57,9 +73,9 @@ public class PedidoAquisicao {
 
     public String getStatusString(){
         if(statusDoPedido == 0) return "foi reprovado";
-        else if(statusDoPedido == 1) return "está em aberto";
+        else if(statusDoPedido == 1) return "esta em aberto";
         else if(statusDoPedido == 2) return "foi aprovado";
-        else if(statusDoPedido == 3) return "foi concluído";
+        else if(statusDoPedido == 3) return "foi concluido";
         else return "pedido não entrado";
     }
 
@@ -72,7 +88,7 @@ public class PedidoAquisicao {
                 itensString += listaItens.get(i).getDescricaoItem();
                 itensString += "; quantidade: ";
                 itensString += listaItens.get(i).getQuantidade();
-                itensString += "; valor unitário: ";
+                itensString += "; valor unitario: ";
                 itensString += listaItens.get(i).getValorUnitario();
             }
             else {
@@ -82,7 +98,7 @@ public class PedidoAquisicao {
                 itensString += listaItens.get(i).getDescricaoItem();
                 itensString += "; quantidade: ";
                 itensString += listaItens.get(i).getQuantidade();
-                itensString += "; valor unitário: ";
+                itensString += "; valor unitario: ";
                 itensString += listaItens.get(i).getValorUnitario();
             }
         }
@@ -182,24 +198,27 @@ public class PedidoAquisicao {
     }
 
     public String pedidoToString(int idPedido){
+        LimpaTela();
         if(getDataDeConclusao() != null){
-            return "PEDIDO NÚMERO " + idPedido 
+            return "PEDIDO NUMERO " + idPedido 
             + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
             + "\nDO DEPARTAMENTO " + getDepartamentoSolicitante().getNomeDepartamento()
             + "\nNO DIA " + getDataDoPedido()
             + "\nO PEDIDO " + getStatusString().toUpperCase()
-            + "\nDATA DE CONCLUSÃO: " + getDataDeConclusao()
+            + "\nDATA DE CONCLUSAO: " + getDataDeConclusao()
             + "\nITENS INCLUSOS: " + "\n" + getItensString()
-            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido();
+            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido()
+            + "\n";
         }
         else{
-            return "PEDIDO NÚMERO " + idPedido + "................."
+            return "PEDIDO NUMERO " + idPedido
             + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
             + "\nDO DEPARTAMENTO " + getDepartamentoSolicitante().getNomeDepartamento()
             + "\nNO DIA " + getDataDoPedido()
             + "\nO PEDIDO " + getStatusString().toUpperCase()
             + "\nITENS INCLUSOS: " + "\n" + getItensString()
-            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido();
+            + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido()
+            + "\n";
         }
     }
 }
