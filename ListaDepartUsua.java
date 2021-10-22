@@ -1,15 +1,19 @@
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.stream.Stream;
 import java.util.Scanner;
 
 public class ListaDepartUsua {
+
     //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
+
     public ListaDepartUsua() {
       this.listaUsuarios = new ArrayList<>(15);
        preencheUsuarios();
@@ -17,33 +21,38 @@ public class ListaDepartUsua {
        preencheDepartamentos();
         this.listaPedidoAquisicao = new ArrayList<>();
     }
-    
-    // faz a média dos ultimos 30 dias baseadas nas referencias de LocalDate;
-     
-    public double utlimostrinta(){
-    
-        ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
-            
-       int count=0;
+
+    public String utlimostrinta(){
+
+        DecimalFormat df = new DecimalFormat("#,###.00");
+
+        ArrayList<PedidoAquisicao>list=new ArrayList<>();
+
+        int count=0;
         for(PedidoAquisicao i:listaPedidoAquisicao){
-           
+
             LocalDate dateString = i.getDataDoPedido();
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-              if(range<=30){
-             count++;
-              }
+            if(range<=30){
+                count++;
+                list.add(i);
+            }
         }
         double valortotalMes=0;
-        for(PedidoAquisicao L: list){
-          valortotalMes+=L.getValorTotalPedido();
-      
+        if (!list.isEmpty()) {
+            for (PedidoAquisicao L : list) {
+                valortotalMes += L.getValorTotalPedido();
+
+            }
+            valortotalMes = valortotalMes / count;
         }
-        valortotalMes=valortotalMes/count;
-    return valortotalMes;
+
+        return df.format(valortotalMes);
     }
-     public int ultimos30dias(){
+
+    public int ultimos30dias(){
 
         ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
         int count=0;
@@ -52,56 +61,74 @@ public class ListaDepartUsua {
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-         if(range<=30){
-             count++;
-         }
-         
+            if(range<=30){
+                count++;
+            }
+
         }
-        return count;   
+        return count;
     }
+
     //quantidade de pedidos concluidos no mes
-    public int ContadorCategoriaConcluido(){
-        int quantidadeConcluida=0;
+    public String ContadorCategoriaConcluido(){
+        DecimalFormat df = new DecimalFormat("#,###.00");
+
+        double valorPedidos = 0.0;
+
         for(PedidoAquisicao l:listaPedidoAquisicao){
             int status=l.getStatusDoPedido();
             LocalDate dateString = l.getDataDoPedido();
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-        if(range<=30&&status==3){
-                quantidadeConcluida++;
-         }}
-            return quantidadeConcluida;
+            if(range<=30&&status==3){
+                valorPedidos+= l.getValorTotalPedido();
+            }}
+        if (valorPedidos == 0) {
+            return "0";
         }
-        //quantidade de pedidos aprovados no mes
-        public int ContadorCategoriaComprovada(){
-        int quantidadeComprovada=0;
+        return df.format(valorPedidos);
+    }
+
+    //quantidade de pedidos aprovados no mes
+    public String ContadorCategoriaComprovada(){
+        DecimalFormat df = new DecimalFormat("#,###.00");
+
+        double valorPedidos = 0.0;
         for(PedidoAquisicao l:listaPedidoAquisicao){
             int status=l.getStatusDoPedido();
             LocalDate dateString = l.getDataDoPedido();
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-        if(range<=30&&status==2){
-                quantidadeComprovada++;
-         }}
-            return quantidadeComprovada;
+            if(range<=30&&status==2){
+                valorPedidos+= l.getValorTotalPedido();
+            }}
+        if (valorPedidos == 0) {
+            return "0";
         }
-        // conta a quantidade de pedidos abertos no mes
-        public int ContadorCategoriaAberto(){
-             int quantidadeAberto=0;
+        return df.format(valorPedidos);
+    }
+
+    public String ContadorCategoriaAberto(){
+        DecimalFormat df = new DecimalFormat("#,###.00");
+
+        double valorPedidos = 0.0;
         for(PedidoAquisicao l:listaPedidoAquisicao){
             int status=l.getStatusDoPedido();
             LocalDate dateString = l.getDataDoPedido();
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-        if(range<=30&&status==1){
-                quantidadeAberto++;
-         }}
-        
-            return quantidadeAberto;
+            if(range<=30&&status==1){
+                valorPedidos+= l.getValorTotalPedido();
+            }}
+        if (valorPedidos == 0) {
+            return "0";
         }
+
+        return df.format(valorPedidos);
+    }
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
@@ -162,15 +189,34 @@ public class ListaDepartUsua {
         this.listaDepartamentos.add(depart5);
     }
 
+
+    public static void LimpaTela(){
+        try
+        {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+            else{
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        }
+        catch (final Exception e )
+        {}
+    }
+
+
+
     public void cadastraUsuario(){//nome, sobrenome, matricula, adm, departamento
         Scanner in = new Scanner(System.in);
         String departamento = "";
         int matricula = 0;
         String novaMatricula = "";
         boolean adm = false;
-        System.out.println("Insira o primeiro nome do novo usuario: ");
+        System.out.print("Insira o primeiro nome do novo usuario: ");
         String nome = in.nextLine();
-        System.out.println("Insira o sobrenome do novo usuario: ");
+        System.out.print("Insira o sobrenome do novo usuario: ");
         String sobrenome = in.nextLine();
         Usuario userValidacao = null;
         do{
@@ -178,47 +224,57 @@ public class ListaDepartUsua {
             do{
                 try{
                     //String faznada = in.nextLine();
-                    System.out.println("Insira a matricula do novo usuario: ");
+                    System.out.print("Insira a matricula do novo usuario: ");
                     novaMatricula = Integer.toString(Integer.parseInt(in.nextLine()));
                     //faznada = in.nextLine();
                     quebraloop = true;
                 }catch(NumberFormatException err){
+                    LimpaTela();
                     System.out.println("Erro! A matricula digitada nao e valida. Tente novamente!");
                     quebraloop = false;
                 }
             }while(quebraloop == false);
             //novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
-            
+
             for(int i = 0; i < listaUsuarios.size(); i++){
                 userValidacao = listaUsuarios.get(i);
                 if(userValidacao.getMatricula().equals(novaMatricula))
                 {
-                    
+
+                    LimpaTela();
                     System.out.println("Matricula já atribuida a um usuario, escolha outra matricula");
                     System.out.println("pressione ENTER para continuar");
                     in.nextLine();
+                    break;
                 }
                 else {userValidacao = null;}
             }
         }while(userValidacao != null);
         boolean quebraloop = false;
         do{
+
+            LimpaTela();
             System.out.println("O novo usuario é administrador? [s/n]");
+            System.out.print("Opcao: ");
             String isadm = in.nextLine().toLowerCase();
             switch(isadm){
                 case "s": { adm = true; quebraloop = true; break;}
                 case "n": { adm = false; quebraloop = true; break;}
                 default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
             }
-        }while(quebraloop == false);
+
+        }while(!quebraloop);
         quebraloop = false;
         do{
+            LimpaTela();
             System.out.println("Escolha um departamento para o novo usuario");
             System.out.println("1- RH");
             System.out.println("2- Producao");
             System.out.println("3- Manutencao");
             System.out.println("4- Engenharia");
             System.out.println("5- TI");
+            System.out.print("Opcao: ");
+
             String escolha = in.nextLine();
             switch(escolha){
                 case "1":{departamento = "RH"; quebraloop = true; break;}
@@ -226,16 +282,16 @@ public class ListaDepartUsua {
                 case "3":{departamento = "Manutencao"; quebraloop = true; break;}
                 case "4":{departamento = "Engenharia"; quebraloop = true; break;}
                 case "5":{departamento = "TI"; quebraloop = true; break;}
-                default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
+                default: {LimpaTela(); System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
             }
-        }while(quebraloop == false);
+
+        }while(!quebraloop);
+
         Usuario user = new Usuario(nome, sobrenome, novaMatricula, adm, departamento);//nome, sobrenome, matricula, adm, departamento
         listaUsuarios.add(user);
 
         System.out.println("Novo usuario cadastrado com sucesso, pressione ENTER para continuar");
         in.nextLine();
-        
-        
 
     }//RH, Produção, Manutençao, Engenharia, TI
 
@@ -295,35 +351,54 @@ public class ListaDepartUsua {
         return this.listaPedidoAquisicao.size();
     }
  
- public String maiorPedidoListado(){
-  String aux="";
-  double maior=0;
-  for(int i=0;i<this.getListaPedidoAquisicaoSize();i++){
-if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
-}
-maior=getPedidoAquisicao(i).getValorTotalPedido();
-    PedidoAquisicao compra = getPedidoAquisicao(i);
-    aux +="\nNUMERO IDENTIFICADOR: "; aux+=i;
-    aux += ". Data de solicitaçao: "; aux += compra.getDataDoPedido();
-    if(compra.getQtdItens() > 3) {
-        aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
-        aux += compra.getItensStringShortLimitado(3);
-        aux += ", entre outros";
-    } else {
-        aux += "; Itens: "; aux += compra.getItensStringShort();
+    public String maiorPedidoListado(){
+
+        String aux="";
+        double maior=0;
+        PedidoAquisicao maiorPedido = null;
+        if (this.getListaPedidoAquisicaoSize() != 0) {
+            for (int i = 0; i < this.getListaPedidoAquisicaoSize(); i++) {
+                if (getPedidoAquisicao(i).getValorTotalPedido() > maior) {
+                    maior = getPedidoAquisicao(i).getValorTotalPedido();
+                    maiorPedido = getPedidoAquisicao(i);
+                }
+            }
+
+            aux += "\nNUMERO IDENTIFICADOR: ";
+            aux += maiorPedido.getIdPedido();
+            aux += ". Data de solicitaçao: ";
+            aux += maiorPedido.getDataDoPedido();
+            if (maiorPedido.getQtdItens() > 3) {
+                aux += "; ";
+                aux += maiorPedido.getQtdItens();
+                aux += " itens: ";
+                aux += maiorPedido.getItensStringShortLimitado(3);
+                aux += ", entre outros";
+            } else {
+                aux += "; Itens: ";
+                aux += maiorPedido.getItensStringShort();
+            }
+            aux += "; Valor total: ";
+            aux += maiorPedido.getValorTotalPedido();
+            aux += "; Status: ";
+            aux += maiorPedido.getStatusString();
+            if ((maiorPedido.getStatusDoPedido() != 1) && maiorPedido.getDataDeConclusao() != null) {
+                aux += "; Data de conclusao: ";
+                aux += maiorPedido.getDataDeConclusao();
+            }
+            aux += ".";
+
+        }
+        else {
+            aux = "Nao existe pedidos para realizar a comparacao.";
+        }
+
+
+
+        return aux;
+
+
     }
-    aux += "; Valor total: "; aux += compra.getValorTotalPedido();
-    aux += "; Status: "; aux += compra.getStatusString();
-    if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
-        aux += "; Data de conclusao: "; aux += compra.getDataDeConclusao();
-    }
-    aux += ".";
-}
-
-return aux;
-
-
- }
 
     public ArrayList<PedidoAquisicao> getListaPedidosFunc(Usuario usuarioLogado){
         ArrayList<PedidoAquisicao> pedidos = new ArrayList<>();
@@ -341,6 +416,8 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
+                teste.setIdPedido(i);
+
                 lista += "\nNUMERO ID: "; lista += i;
                 lista += ". Solicitacao no dia "; lista += teste.getDataDoPedido();
                 lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();

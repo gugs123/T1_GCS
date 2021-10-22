@@ -71,6 +71,10 @@ public class PedidoAquisicao {
         return statusDoPedido;
     }
 
+    public ArrayList<Item> getListaItem(){
+        return this.listaItens;
+    }
+
     public String getStatusString(){
         if(statusDoPedido == 0) return "foi reprovado";
         else if(statusDoPedido == 1) return "esta em aberto";
@@ -169,20 +173,24 @@ public class PedidoAquisicao {
     public boolean setStatusDoPedido(int statusDoPedido, String dataAprovadoString) {
 
         boolean concluidoSucesso = false;
-        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate dataAprov = LocalDate.parse(dataAprovadoString,formatoData);
+        try {
+            DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataAprov = LocalDate.parse(dataAprovadoString, formatoData);
 
-        //Nao tem como passar 1 visto que ele ganha o status de aberto logo na sua criacao
-        //Nao tem como passar 3, porque sua conclusao so vai ser dada quando for entregue os itens
-        if (statusDoPedido == 0) {
-            this.statusDoPedido = statusDoPedido;
-        }
-        else if (statusDoPedido == 2) {
-            if (dataAprov.isAfter(dataDoPedido)) {
-                this.statusDoPedido = 3;
-                this.dataDeConclusao = dataAprov.plusDays(7);
-                concluidoSucesso = true;
+            //Nao tem como passar 1 visto que ele ganha o status de aberto logo na sua criacao
+            //Nao tem como passar 3, porque sua conclusao so vai ser dada quando for entregue os itens
+            if (statusDoPedido == 0) {
+                this.statusDoPedido = statusDoPedido;
+            } else if (statusDoPedido == 2) {
+                if (dataAprov.isAfter(dataDoPedido) || dataAprov.isEqual(dataDoPedido)) {
+                    this.statusDoPedido = 3;
+                    this.dataDeConclusao = dataAprov.plusDays(7);
+                    concluidoSucesso = true;
+                }
             }
+        }
+        catch (Exception e1) {
+            //catch vazio, visto que eh apenas usado para nao parar o codigo em si
         }
 
         return concluidoSucesso;
@@ -198,7 +206,6 @@ public class PedidoAquisicao {
     }
 
     public String pedidoToString(int idPedido){
-        LimpaTela();
         if(getDataDeConclusao() != null){
             return "PEDIDO NUMERO " + idPedido 
             + "\nSOLICITADO POR " + getUsuarioSolicitante().getNome() + " " + getUsuarioSolicitante().getInicialSobrenome()
@@ -220,5 +227,13 @@ public class PedidoAquisicao {
             + "\n.................................\nVALOR TOTAL: " + getValorTotalPedido()
             + "\n";
         }
+    }
+
+    public void setIdPedido(int id) {
+        this.idPedido = id;
+    }
+
+    public int getIdPedido() {
+        return this.idPedido;
     }
 }
