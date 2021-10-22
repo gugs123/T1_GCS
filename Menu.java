@@ -378,6 +378,7 @@ public class Menu{
         
     }
 
+  
     //Utilizado para ambos (admin e usuario), altera o pedido(aprova, deleta, recusa)
     public static void menuAlteracao(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         boolean subLoop = true;

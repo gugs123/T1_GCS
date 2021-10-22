@@ -3,7 +3,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.stream.Stream;
+import java.util.Scanner;
 
 public class ListaDepartUsua {
 
@@ -187,6 +189,7 @@ public class ListaDepartUsua {
         this.listaDepartamentos.add(depart5);
     }
 
+
     public static void LimpaTela(){
         try
         {
@@ -203,25 +206,40 @@ public class ListaDepartUsua {
         {}
     }
 
+
+
     public void cadastraUsuario(){//nome, sobrenome, matricula, adm, departamento
         Scanner in = new Scanner(System.in);
         String departamento = "";
+        int matricula = 0;
         String novaMatricula = "";
         boolean adm = false;
-        System.out.print("Insira o primeiro nome do novo usuario: ");
+        System.out.println("Insira o primeiro nome do novo usuario: ");
         String nome = in.nextLine();
-        System.out.print("Insira o sobrenome do novo usuario: ");
+        System.out.println("Insira o sobrenome do novo usuario: ");
         String sobrenome = in.nextLine();
         Usuario userValidacao = null;
         do{
-
-            System.out.print("Insira a matricula do novo usuario: ");
-            novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
+            boolean quebraloop = true;
+            do{
+                try{
+                    //String faznada = in.nextLine();
+                    System.out.println("Insira a matricula do novo usuario: ");
+                    novaMatricula = Integer.toString(Integer.parseInt(in.nextLine()));
+                    //faznada = in.nextLine();
+                    quebraloop = true;
+                }catch(NumberFormatException err){
+                    System.out.println("Erro! A matricula digitada nao e valida. Tente novamente!");
+                    quebraloop = false;
+                }
+            }while(quebraloop == false);
+            //novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
 
             for(int i = 0; i < listaUsuarios.size(); i++){
                 userValidacao = listaUsuarios.get(i);
                 if(userValidacao.getMatricula().equals(novaMatricula))
                 {
+
                     LimpaTela();
                     System.out.println("Matricula já atribuida a um usuario, escolha outra matricula");
                     System.out.println("pressione ENTER para continuar");
@@ -233,6 +251,7 @@ public class ListaDepartUsua {
         }while(userValidacao != null);
         boolean quebraloop = false;
         do{
+
             LimpaTela();
             System.out.println("O novo usuario é administrador? [s/n]");
             System.out.print("Opcao: ");
@@ -242,6 +261,7 @@ public class ListaDepartUsua {
                 case "n": { adm = false; quebraloop = true; break;}
                 default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
             }
+
         }while(!quebraloop);
         quebraloop = false;
         do{
@@ -253,6 +273,7 @@ public class ListaDepartUsua {
             System.out.println("4- Engenharia");
             System.out.println("5- TI");
             System.out.print("Opcao: ");
+
             String escolha = in.nextLine();
             switch(escolha){
                 case "1":{departamento = "RH"; quebraloop = true; break;}
@@ -262,14 +283,14 @@ public class ListaDepartUsua {
                 case "5":{departamento = "TI"; quebraloop = true; break;}
                 default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
             }
+
         }while(!quebraloop);
+
         Usuario user = new Usuario(nome, sobrenome, novaMatricula, adm, departamento);//nome, sobrenome, matricula, adm, departamento
         listaUsuarios.add(user);
 
         System.out.println("Novo usuario cadastrado com sucesso, pressione ENTER para continuar");
         in.nextLine();
-
-
 
     }//RH, Produção, Manutençao, Engenharia, TI
 
