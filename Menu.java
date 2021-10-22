@@ -317,7 +317,9 @@ public class Menu{
                         break;
                     }
                     case "4": {
-                        
+                        System.out.println("\n Quantidade de pedidos abertos nos ultimos 30 dias: "+auxLista.ContadorCategoriaAberto());
+                        System.out.println("\n Quantidade de pedidos comprovados nos ultimos 30 dias: "+auxLista.ContadorCategoriaComprovada());
+                        System.out.println("\n Quantidade de pedidos concluidos nos ultimos 30 dias: "+auxLista.ContadorCategoriaConcluido());
                         break;
                     }
                     case "5": {

@@ -57,7 +57,49 @@ public class ListaDepartUsua {
         }
         return count;   
     }
-   
+    //quantidade de pedidos concluidos no mes
+    public int ContadorCategoriaConcluido(){
+        int quantidadeConcluida=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+        if(range<=30&&status==3){
+                quantidadeConcluida++;
+         }}
+            return quantidadeConcluida;
+        }
+        //quantidade de pedidos aprovados no mes
+        public int ContadorCategoriaComprovada(){
+        int quantidadeComprovada=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+        if(range<=30&&status==2){
+                quantidadeComprovada++;
+         }}
+            return quantidadeComprovada;
+        }
+        // conta a quantidade de pedidos abertos no mes
+        public int ContadorCategoriaAberto(){
+             int quantidadeAberto=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+        if(range<=30&&status==1){
+                quantidadeAberto++;
+         }}
+        
+            return quantidadeAberto;
+        }
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
