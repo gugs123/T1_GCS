@@ -242,7 +242,7 @@ public class ListaDepartUsua {
                 {
 
                     LimpaTela();
-                    System.out.println("Matricula já atribuida a um usuario, escolha outra matricula");
+                    System.out.println("Matricula ja atribuida a um usuario, escolha outra matricula");
                     System.out.println("pressione ENTER para continuar");
                     in.nextLine();
                     break;
@@ -254,7 +254,7 @@ public class ListaDepartUsua {
         do{
 
             LimpaTela();
-            System.out.println("O novo usuario é administrador? [s/n]");
+            System.out.println("O novo usuario eh administrador? [s/n]");
             System.out.print("Opcao: ");
             String isadm = in.nextLine().toLowerCase();
             switch(isadm){

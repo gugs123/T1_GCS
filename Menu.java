@@ -12,7 +12,7 @@ import javax.naming.AuthenticationException;
 
 public class Menu{
     public static void main (String[] args){
-        //Chama função limpa terminal
+        //Chama funcao limpa terminal
         LimpaTela();
         //Classe que contem todos os dados (usuarios, departamentos e pedidos)
         ListaDepartUsua auxLista = new ListaDepartUsua();
@@ -66,7 +66,7 @@ public class Menu{
                 return usuarioLogado = Login(auxLista);
 
             case "2":
-                //Pega um departamento a partir de uma String(nome do departamento) de um usuário
+                //Pega um departamento a partir de uma String(nome do departamento) de um usuario
                 Departamento departamentoUsu = auxLista.buscaPorDepartamento(usuarioLogado.getDepartamento());
                 return criarPedido(usuarioLogado, in, departamentoUsu, auxLista);
 
@@ -98,7 +98,7 @@ public class Menu{
             default:
             {
                 LimpaTela();
-                System.out.print("Opcao inválida! ");
+                System.out.print("Opcao invalida! ");
                 in.nextLine();
                 break;
             }
@@ -144,7 +144,7 @@ public class Menu{
                 case "3": {
                     LimpaTela();
                     System.out.println("Quantidade de pedidos efetuados nos ultimos 30 dias: "+auxLista.ultimos30dias());
-                    System.out.println("\nMédia do preço dos pedidos efetuados nos ultimos 30 dias R$ "+auxLista.utlimostrinta()+"\n");
+                    System.out.println("\nMedia do preco dos pedidos efetuados nos ultimos 30 dias R$ "+auxLista.utlimostrinta()+"\n");
 
                     System.out.print("Digite 0 para voltar ao menu principal: ");
                     in.next();
@@ -187,7 +187,7 @@ public class Menu{
                     break;
                 }
                 default: {
-                    System.out.println("\nOpção inválida.\n");
+                    System.out.println("\nOpcao invalida.\n");
                     subLoop = true;
                     try {
                         Thread.sleep(2500);
@@ -421,7 +421,7 @@ public class Menu{
                     break;
                 }
                 default: {
-                    System.out.println("\nOpção inválida.\n");
+                    System.out.println("\nOpcao invalida.\n");
                     subLoop = true;
                     try {
                         Thread.sleep(2500);
@@ -479,7 +479,7 @@ public class Menu{
                 if(qtdAberto > 0 && subLoopAbert) {
                     System.out.println("\nPedidos abertos:");
                     System.out.println(auxLista.getListaPedidosStatus(1));
-                    System.out.print("\nInsira o numero de indificador, ou -1 para ver os pedidos ABERTOS: ");
+                    System.out.print("\nInsira o numero de indentificador, ou -1 para ver os pedidos ABERTOS: ");
                     int opcao = in.nextInt();
                     if(opcao >= 0 && opcao <= auxLista.getListaPedidoAquisicaoSize()){
                         menuAlteracao(usuarioLogado, in, opcao, auxLista);
@@ -491,7 +491,7 @@ public class Menu{
                 }
             }while(subLoopAbert);  //WTF
         } else {
-            System.out.println("Erro: voce nao tem autorização para acessar este menu.");
+            System.out.println("Erro: voce nao tem autorizacao para acessar este menu.");
         }
 
         try {
@@ -569,7 +569,7 @@ public class Menu{
                 }
                 in.next();
             } else {
-                System.out.println("\nNao e possivel modificar o status de um pedido uma vez que este já foi modificado.");
+                System.out.println("\nNao e possivel modificar o status de um pedido uma vez que este ja foi modificado.");
                 try {
                     Thread.sleep(6500);
                 } catch (InterruptedException e) {
@@ -577,7 +577,7 @@ public class Menu{
                 }
             }
         } else {
-            System.out.println("\nVoce nao tem autorizacao para completar esta açao.");
+            System.out.println("\nVoce nao tem autorizacao para completar esta acao.");
             try {
                 Thread.sleep(5500);
             } catch (InterruptedException e) {
@@ -596,7 +596,7 @@ public class Menu{
                 String saida = in.next();
             } else {
                 LimpaTela();
-                System.out.println("Nao é possível modificar o status de um pedido uma vez que este já foi modificado.");
+                System.out.println("Nao eh possivel modificar o status de um pedido uma vez que este ja foi modificado.");
                 try {
                     Thread.sleep(6500);
                 } catch (InterruptedException e) {
@@ -605,7 +605,7 @@ public class Menu{
             }
         } else{
             LimpaTela();
-            System.out.println("Voce não tem autorizacao para completar esta acao.");
+            System.out.println("Voce nao tem autorizacao para completar esta acao.");
             try {
                 Thread.sleep(5500);
             } catch (InterruptedException e) {
@@ -696,6 +696,7 @@ public class Menu{
         }
     }
 
+    //Utilizado para fazer buscas anteriormente
 /*//    private static void buscarPorFuncionario(Usuario usuarioLogado, ListaDepartUsua auxLista){
 //        ArrayList<PedidoAquisicao> lista = new ArrayList<>();
 //
@@ -728,7 +729,7 @@ public class Menu{
         int aux = -1;
 
         LimpaTela();
-        System.out.print("Digite da Descrição do item que procura: ");
+        System.out.print("Digite da Descricao do item que procura: ");
         descricaoItem = in.nextLine();
         System.out.println();
 
@@ -812,6 +813,7 @@ public class Menu{
     }
     //fim da busca por ADM
 
+    //Metodo usado antigamente para realizar algumas buscas
     /*// public static void buscaPorID(Usuario usuarioLogado, ListaDepartUsua auxLista){
             
     //     Scanner in = new Scanner(System.in);
@@ -897,7 +899,7 @@ public class Menu{
         }
         else if (qtd != 0 && usuarioLogado != pesquisa){
             LimpaTela();
-            System.out.println("Este usuário salvou " + qtd + " pedido/s.");
+            System.out.println("Este usuario salvou " + qtd + " pedido/s.");
             System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
             if(usuarioLogado.isAdm() == false)System.out.println("\nVoce nao pode modificar os pedidos de outros usuarios, apenas pode ve-los. Digite qualquer coisa para sair.");
             else {
