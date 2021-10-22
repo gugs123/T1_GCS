@@ -176,29 +176,29 @@ public class ListaDepartUsua {
         return this.listaPedidoAquisicao.size();
     }
  
- public String maiorPedidoListado(){
-  String aux="";
-  double maior=0;
-  for(int i=0;i<this.getListaPedidoAquisicaoSize();i++){
-if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
-}
-maior=getPedidoAquisicao(i).getValorTotalPedido();
-    PedidoAquisicao compra = getPedidoAquisicao(i);
-    aux +="\nNUMERO IDENTIFICADOR: "; aux+=i;
-    aux += ". Data de solicitaçao: "; aux += compra.getDataDoPedido();
-    if(compra.getQtdItens() > 3) {
-        aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
-        aux += compra.getItensStringShortLimitado(3);
-        aux += ", entre outros";
-    } else {
-        aux += "; Itens: "; aux += compra.getItensStringShort();
-    }
-    aux += "; Valor total: "; aux += compra.getValorTotalPedido();
-    aux += "; Status: "; aux += compra.getStatusString();
-    if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
-        aux += "; Data de conclusao: "; aux += compra.getDataDeConclusao();
-    }
-    aux += ".";
+    public String maiorPedidoListado(){
+        String aux="";
+        double maior=0;
+        for(int i=0;i<this.getListaPedidoAquisicaoSize();i++){
+        if(getPedidoAquisicao(i).getValorTotalPedido()>maior){
+        }
+        maior=getPedidoAquisicao(i).getValorTotalPedido();
+        PedidoAquisicao compra = getPedidoAquisicao(i);
+        aux +="\nNUMERO IDENTIFICADOR: "; aux+=i;
+        aux += ". Data de solicitaçao: "; aux += compra.getDataDoPedido();
+        if(compra.getQtdItens() > 3) {
+            aux += "; "; aux += compra.getQtdItens(); aux += " itens: ";
+            aux += compra.getItensStringShortLimitado(3);
+            aux += ", entre outros";
+        } else {
+            aux += "; Itens: "; aux += compra.getItensStringShort();
+        }
+        aux += "; Valor total: "; aux += compra.getValorTotalPedido();
+        aux += "; Status: "; aux += compra.getStatusString();
+        if((compra.getStatusDoPedido() != 1) && compra.getDataDeConclusao() != null) {
+            aux += "; Data de conclusao: "; aux += compra.getDataDeConclusao();
+        }
+        aux += ".";
 }
 
 return aux;
