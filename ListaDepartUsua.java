@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class ListaDepartUsua {
@@ -17,33 +18,32 @@ public class ListaDepartUsua {
        preencheDepartamentos();
         this.listaPedidoAquisicao = new ArrayList<>();
     }
-    
-    // faz a média dos ultimos 30 dias baseadas nas referencias de LocalDate;
-     
+
     public double utlimostrinta(){
-    
+
         ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
-            
-       int count=0;
+
+        int count=0;
         for(PedidoAquisicao i:listaPedidoAquisicao){
-           
+
             LocalDate dateString = i.getDataDoPedido();
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-              if(range<=30){
-             count++;
-              }
+            if(range<=30){
+                count++;
+            }
         }
         double valortotalMes=0;
         for(PedidoAquisicao L: list){
-          valortotalMes+=L.getValorTotalPedido();
-      
+            valortotalMes+=L.getValorTotalPedido();
+
         }
         valortotalMes=valortotalMes/count;
-    return valortotalMes;
+        return valortotalMes;
     }
-     public int ultimos30dias(){
+
+    public int ultimos30dias(){
 
         ArrayList<PedidoAquisicao>list=new ArrayList<PedidoAquisicao>();
         int count=0;
@@ -52,14 +52,58 @@ public class ListaDepartUsua {
             LocalDate startDate = dateString;
             LocalDate endtDate = LocalDate.now();
             Long range = ChronoUnit.DAYS.between(startDate, endtDate);
-         if(range<=30){
-             count++;
-         }
-         
+            if(range<=30){
+                count++;
+            }
+
         }
-        return count;   
+        return count;
     }
-   
+
+    //quantidade de pedidos concluidos no mes
+    public int ContadorCategoriaConcluido(){
+        int quantidadeConcluida=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+            if(range<=30&&status==3){
+                quantidadeConcluida++;
+            }}
+        return quantidadeConcluida;
+    }
+
+    //quantidade de pedidos aprovados no mes
+    public int ContadorCategoriaComprovada(){
+        int quantidadeComprovada=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+            if(range<=30&&status==2){
+                quantidadeComprovada++;
+            }}
+        return quantidadeComprovada;
+    }
+
+    public int ContadorCategoriaAberto(){
+        int quantidadeAberto=0;
+        for(PedidoAquisicao l:listaPedidoAquisicao){
+            int status=l.getStatusDoPedido();
+            LocalDate dateString = l.getDataDoPedido();
+            LocalDate startDate = dateString;
+            LocalDate endtDate = LocalDate.now();
+            Long range = ChronoUnit.DAYS.between(startDate, endtDate);
+            if(range<=30&&status==1){
+                quantidadeAberto++;
+            }}
+
+        return quantidadeAberto;
+    }
 
     //Serve para iniciar os usuarios
     private void preencheUsuarios(){
@@ -119,6 +163,71 @@ public class ListaDepartUsua {
         depart5.preencheListaUsuarios(this.listaUsuarios);
         this.listaDepartamentos.add(depart5);
     }
+
+    public void cadastraUsuario(){//nome, sobrenome, matricula, adm, departamento
+        Scanner in = new Scanner(System.in);
+        String departamento = "";
+        String novaMatricula = "";
+        boolean adm = false;
+        System.out.println("Insira o primeiro nome do novo usuario: ");
+        String nome = in.nextLine();
+        System.out.println("Insira o sobrenome do novo usuario: ");
+        String sobrenome = in.nextLine();
+        Usuario userValidacao = null;
+        do{
+
+            System.out.println("Insira a matricula do novo usuario: ");
+            novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
+
+            for(int i = 0; i < listaUsuarios.size(); i++){
+                userValidacao = listaUsuarios.get(i);
+                if(userValidacao.getMatricula().equals(novaMatricula))
+                {
+
+                    System.out.println("Matricula já atribuida a um usuario, escolha outra matricula");
+                    System.out.println("pressione ENTER para continuar");
+                    in.nextLine();
+                }
+                else {userValidacao = null;}
+            }
+        }while(userValidacao != null);
+        boolean quebraloop = false;
+        do{
+            System.out.println("O novo usuario é administrador? [s/n]");
+            String isadm = in.nextLine().toLowerCase();
+            switch(isadm){
+                case "s": { adm = true; quebraloop = true; break;}
+                case "n": { adm = false; quebraloop = true; break;}
+                default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
+            }
+        }while(quebraloop == false);
+        quebraloop = false;
+        do{
+            System.out.println("Escolha um departamento para o novo usuario");
+            System.out.println("1- RH");
+            System.out.println("2- Producao");
+            System.out.println("3- Manutencao");
+            System.out.println("4- Engenharia");
+            System.out.println("5- TI");
+            String escolha = in.nextLine();
+            switch(escolha){
+                case "1":{departamento = "RH"; quebraloop = true; break;}
+                case "2":{departamento = "Producao"; quebraloop = true; break;}
+                case "3":{departamento = "Manutencao"; quebraloop = true; break;}
+                case "4":{departamento = "Engenharia"; quebraloop = true; break;}
+                case "5":{departamento = "TI"; quebraloop = true; break;}
+                default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
+            }
+        }while(quebraloop == false);
+        Usuario user = new Usuario(nome, sobrenome, novaMatricula, adm, departamento);//nome, sobrenome, matricula, adm, departamento
+        listaUsuarios.add(user);
+
+        System.out.println("Novo usuario cadastrado com sucesso, pressione ENTER para continuar");
+        in.nextLine();
+
+
+
+    }//RH, Produção, Manutençao, Engenharia, TI
 
     //Serve para realizar uma busca atraves da variavel matricula
     public Usuario buscaPorMatricula(String matricula) {

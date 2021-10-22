@@ -15,6 +15,7 @@ public class Usuario {
         this.inicialNome = nome.charAt(0);
         this.inicialSobrenome = sobrenome.charAt(0);
     }
+    public Usuario(){}
     
     public String getNome() {
         return nome;

@@ -114,6 +114,7 @@ public class Menu{
 
         do {
             System.out.println("Menu Principal do Administrador");
+            System.out.println("0- Cadastrar um novo usuario");
             System.out.println("1- Entrar no menu de busca");
             System.out.println("2- Estatistica de pedidos totais");
             System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");
@@ -124,6 +125,11 @@ public class Menu{
             String opcao = in.nextLine();
 
             switch (opcao) {
+                case "0": {
+                    auxLista.cadastraUsuario();
+                    subLoop = false;
+                    break;
+                }
                 case "1": {
                     buscaDoADM(usuarioLogado, auxLista, in);
                     subLoop = false;
@@ -135,13 +141,20 @@ public class Menu{
                     break;
                 }
                 case "3": {
-                    System.out.println("\n Quantidade de pedidos efetuados nos ultimos 30 dias" + auxLista.ultimos30dias());
+                    LimpaTela();
+                    System.out.println("Quantidade de pedidos efetuados nos ultimos 30 dias: "+auxLista.ultimos30dias());
+                    System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias R$ "+auxLista.utlimostrinta()+"\n");
+
+                    System.out.print("Digite 0 para voltar ao menu principal: ");
+                    in.next();
                     subLoop = false;
                     break;
                 }
                 case "4": {
 
-                    System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias" + auxLista.utlimostrinta() + "R$");
+                    System.out.println("\n Quantidade de pedidos abertos nos ultimos 30 dias: "+auxLista.ContadorCategoriaAberto());
+                    System.out.println("\n Quantidade de pedidos comprovados nos ultimos 30 dias: "+auxLista.ContadorCategoriaComprovada());
+                    System.out.println("\n Quantidade de pedidos concluidos nos ultimos 30 dias: "+auxLista.ContadorCategoriaConcluido());
                     subLoop = false;
                     break;
                 }
