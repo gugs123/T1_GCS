@@ -126,6 +126,7 @@ public class Menu{
 
             switch (opcao) {
                 case "0": {
+                    LimpaTela();
                     auxLista.cadastraUsuario();
                     subLoop = false;
                     break;
@@ -143,7 +144,7 @@ public class Menu{
                 case "3": {
                     LimpaTela();
                     System.out.println("Quantidade de pedidos efetuados nos ultimos 30 dias: "+auxLista.ultimos30dias());
-                    System.out.println("\n Média do preço dos pedidos efetuados nos ultimos 30 dias R$ "+auxLista.utlimostrinta()+"\n");
+                    System.out.println("\nMédia do preço dos pedidos efetuados nos ultimos 30 dias R$ "+auxLista.utlimostrinta()+"\n");
 
                     System.out.print("Digite 0 para voltar ao menu principal: ");
                     in.next();
@@ -152,15 +153,23 @@ public class Menu{
                 }
                 case "4": {
 
-                    System.out.println("\n Quantidade de pedidos abertos nos ultimos 30 dias: "+auxLista.ContadorCategoriaAberto());
-                    System.out.println("\n Quantidade de pedidos comprovados nos ultimos 30 dias: "+auxLista.ContadorCategoriaComprovada());
-                    System.out.println("\n Quantidade de pedidos concluidos nos ultimos 30 dias: "+auxLista.ContadorCategoriaConcluido());
+                    LimpaTela();
+                    System.out.println("\nValor total de pedidos abertos nos ultimos 30 dias: R$ "+auxLista.ContadorCategoriaAberto());
+                    System.out.println("\nValor total de pedidos comprovados nos ultimos 30 dias: R$ "+auxLista.ContadorCategoriaComprovada());
+                    System.out.println("\nValor total de pedidos concluidos nos ultimos 30 dias: R$ "+auxLista.ContadorCategoriaConcluido());
+
+                    System.out.print("\n\nDigite 0 para voltar ao menu principal: ");
+                    in.next();
                     subLoop = false;
                     break;
                 }
                 case "5": {
                     if (auxLista.getListaPedidoAquisicaoSize() != 0) {
+                        LimpaTela();
+                        System.out.print("Maior pedido em valor: ");
                         System.out.println(auxLista.maiorPedidoListado());
+                        System.out.print("\n\nDigite 0 para voltar ao menu principal: ");
+                        in.next();
                     }
                     else {
                         System.out.println("Nao tem pedidos, visto os requisitos.");
