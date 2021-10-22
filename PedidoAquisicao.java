@@ -225,4 +225,8 @@ public class PedidoAquisicao {
             + "\n";
         }
     }
+
+    public void setIdPedido(int id) {
+        this.idPedido = id;
+    }
 }

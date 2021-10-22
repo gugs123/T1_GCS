@@ -55,7 +55,7 @@ public class Menu{
         System.out.println("1 - Alterar usuario");
         System.out.println("2 - Criar um pedido");
         System.out.println("3 - Buscar seus pedidos");
-        System.out.println("4 - Painel Admistrador");
+        System.out.println("4 - Painel Administrador");
         System.out.println("9 - Sair"); 
         System.out.print("Opcao: ");
         opcao = in.nextLine();
@@ -64,13 +64,12 @@ public class Menu{
         {
             case "1":
                 return usuarioLogado = Login(auxLista);
-                break;
+
             case "2":
                 //Pega um departamento a partir de uma String(nome do departamento) de um usuário
                 Departamento departamentoUsu = auxLista.buscaPorDepartamento(usuarioLogado.getDepartamento());
-                //if(criarPedido(usuarioLogado, in, departamentoUsu, auxLista) == usuarioLogado) System.out.println("Pedido adicionado com sucesso.");
                 return criarPedido(usuarioLogado, in, departamentoUsu, auxLista);
-                break;
+
 
             case "3":
                 //busca de funcionarios e ADM
@@ -83,7 +82,8 @@ public class Menu{
                 if(usuarioLogado==null)
                 {
                     LimpaTela();
-                    System.out.print("Usuario logado nao tem permissao para acessar este menu ");
+                    System.out.println("Usuario logado nao tem permissao para acessar este menu.");
+                    System.out.print("Digite 0 para voltar para o menu: ");
                     in.nextLine();
                     return aux;
                 }
@@ -91,8 +91,6 @@ public class Menu{
                 {
                     return usuarioLogado;
                 }
-            
-
             case "9":
             {
                 System.exit(0);
@@ -116,7 +114,7 @@ public class Menu{
         while(sair==false)
         {
             LimpaTela();
-            System.out.println("\nMenu Admimistrador");
+            System.out.println("\nMenu Administrador");
             System.out.println("1- Avaliar pedido em aberto");
             System.out.println("2- Estatistica de pedidos totais");
             System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
@@ -182,12 +180,11 @@ public class Menu{
 
     public static Usuario criarPedido(Usuario logado, Scanner in, Departamento departamentoUsu, ListaDepartUsua listaAux){
 
+        LimpaTela();
         ArrayList<Item> listaItens = new ArrayList<>();
         boolean op = false;
         boolean subLoop1 = false;
-        LimpaTela();
         String dataString = "";
-        System.out.println();
 
         do {
             System.out.print("Informe a data do pedido, com formato dd/MM/yyyy: ");
@@ -202,15 +199,15 @@ public class Menu{
                 }
                 else {
                     LimpaTela();
-                    System.out.print("Valor invalido para data, coloque numeros relativos ao calendário !");
-                    in.nextLine();
+                    System.out.println("Valor invalido para data, coloque numeros relativos ao calendario.\n");
+                    //in.nextLine();
                     subLoop1 = true;
                 }
 
             } else {
                 LimpaTela();
                 System.out.println("Valor invalido para data, siga o modelo de formato.\n");
-                in.nextLine();
+                //in.nextLine();
                 subLoop1 = true;
             }
         } while (subLoop1);
@@ -221,27 +218,26 @@ public class Menu{
         do{
             double valor = 0;
             int quantidade = 0;
-            LimpaTela();
             System.out.print("Informe a descricao do item: ");
             String descItem = in.nextLine();
 
             //Validacao do valor do item
             do {
                 try {
-
                     System.out.print("Informe o valor do item: ");
                     valor = in.nextDouble();
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
                     LimpaTela();
-                    System.out.println("Erro: Coloque um numero valido.\n");
+                    System.out.println("Erro: Coloque um valor valido.\n");
                     subLoop1 = true;
                     in.nextLine();
 
                 } catch (Exception e2) {
+                    LimpaTela();
                     System.out.println("Erro: " + e2+"\n");
                     subLoop1 = true;
-                    in.nextLine();
+                    //in.nextLine();
                 }
             } while(subLoop1);
 
@@ -249,27 +245,26 @@ public class Menu{
             //Validacao da quantidade desejada
             do {
                 try {
-
                     System.out.print("Informe a quantidade desejada: ");
                     quantidade = in.nextInt();
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
                     LimpaTela();
-                    System.out.print("Erro: Coloque um número inteiro! ");
+                    System.out.println("Erro: Coloque um numero inteiro.\n");
                     subLoop1 = true;
                     in.nextLine();
 
                 } catch (Exception e2) {
                     LimpaTela();
-                    System.out.print("Erro: " + e2);
+                    System.out.println("Erro: " + e2+"\n");
                     subLoop1 = true;
-                    in.nextLine();
+                    //in.nextLine();
                 }
             } while(subLoop1);
 
             Item item = new Item(descItem, valor, quantidade);
             listaItens.add(item);
-            System.out.println();
+            LimpaTela();
 
             //Validacao de continuacao
             int resposta = -1;
@@ -281,11 +276,12 @@ public class Menu{
                     subLoop1 = false;
                 } catch (InputMismatchException e1) {
                     LimpaTela();
-                    System.out.print("Erro: Coloque um numero inteiro! ");
+                    System.out.println("Erro: Coloque um numero inteiro.\n");
                     subLoop1 = true;
                     in.nextLine();
 
                 } catch (Exception e2) {
+                    LimpaTela();
                     System.out.println("Erro: " + e2+"\n");
                     subLoop1 = true;
                     in.nextLine();
@@ -293,9 +289,9 @@ public class Menu{
 
                 if (resposta != 0 && resposta != 1) {
                     if (!subLoop1) { //Visando o buffer que vai ser limpo do in.nextLine()
-                        System.out.println("Erro: Selecione um índice válido.\n");
+                        LimpaTela();
+                        System.out.println("Erro: Selecione um indice valido.\n");
                         subLoop1 = true;
-                        in.nextLine();
                     }
                 }
             } while(subLoop1);
@@ -303,9 +299,10 @@ public class Menu{
             if (resposta == 0) {
                 op = true;
             }
+
             //Limpa o buffer
             in.nextLine();
-            System.out.println();
+            LimpaTela();
 
         }while(!op);
 
@@ -315,12 +312,16 @@ public class Menu{
         if(pedido.getValorTotalPedido() > departamentoUsu.getValorLimitePedido()){
             System.out.println("\nPedido de aquisicao invalido: nao respeitou o valor limite.");
         } else{
-            LimpaTela();
             System.out.print("Pedido de aquisicao adicionado!  ");
-            in.nextLine();
             listaAux.adicionaPedidoAquisicao(pedido);
-            
         }
+
+        try {
+            Thread.sleep(4500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return logado;
     }
 
@@ -336,15 +337,16 @@ public class Menu{
         
     }
 
-    //???????????
+    //Utilizado para ambos (admin e usuario)
     public static void menuAlteracao(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         boolean subLoop = true;
+        LimpaTela();
         do{
             System.out.println("\nDeseja fazer algo com este pedido?");
             System.out.println("0 - Nao.");
             System.out.println("1 - Ver mais detalhes");
             System.out.println("2 - Deletar pedido");
-            if(usuarioLogado.isAdm() == true){
+            if(usuarioLogado.isAdm()){
                 System.out.println("3 - Reprovar pedido");
                 System.out.println("4 - Aprovar pedido");
             }
@@ -352,13 +354,13 @@ public class Menu{
             int opcaoCase = in.nextInt();
             switch(opcaoCase){
                 case 0: {
-                    System.out.println("\nDigite qualquer coisa para sair.");
                     subLoop = false;
                     break;
                 }
                 case 1: {
                     PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
                     System.out.println("\n" + retorno.pedidoToString(idPedido));
+                    subLoop = true;
                     break;
                 }
                 case 2: {
@@ -377,12 +379,18 @@ public class Menu{
                     break;
                 }
                 default: {
-                    System.out.println("Opção inválida.");
-                    subLoop = false;
+                    System.out.println("\nOpção inválida.\n");
+                    subLoop = true;
+                    try {
+                        Thread.sleep(2500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    LimpaTela();
                     break;
                 }
             }
-        }while(subLoop == true); 
+        }while(subLoop);
     }
  
 
@@ -457,7 +465,12 @@ public class Menu{
                 }
             }while(subLoopReprov = true);
         } else System.out.println("Erro: voce nao tem autorização para acessar este menu.");
-        in.nextInt();
+
+        try {
+            Thread.sleep(4500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
    
@@ -465,7 +478,7 @@ public class Menu{
     private static void deletar(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
         PedidoAquisicao retorno = auxLista.getPedidoAquisicao(idPedido);
         if(usuarioLogado == retorno.getUsuarioSolicitante()){
-            //LimpaTela();
+            LimpaTela();
             System.out.println("\nVoce tem certeza que quer deletar este pedido? Esta acao e irreversivel.");
             System.out.println("Os numeros de identificacao dos outros pedidos mudarao dinamicamente.");
             System.out.println("[0] para CANCELAR\n[1] para CONFIRMAR");
@@ -478,9 +491,25 @@ public class Menu{
                 System.out.print("Pedido removido com sucesso. Digite 0 para retornar ao menu: ");
                 in.nextInt();
             }
-            else System.out.println("Operacao cancelada. Digite qualquer coisa para sair.");
+            else {
+                LimpaTela();
+                System.out.println("Operacao cancelada.");
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        else System.out.println("Desculpe. Voce nao pode executar esta funcao. Digite qualquer coisa para sair.");
+        else {
+            LimpaTela();
+            System.out.println("Desculpe. Voce nao pode executar esta funcao.");
+            try {
+                Thread.sleep(3500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void aprovaPedido(Usuario usuarioLogado, Scanner in, int idPedido, ListaDepartUsua auxLista){
@@ -724,13 +753,14 @@ public class Menu{
         }
         
         if(qtd == 0 && usuarioLogado != pesquisa) {
+            LimpaTela();
             System.out.println("\nNao ha pedidos salvos por este funcionario. Digite 0 para retornar ao Menu: ");
             in.nextInt();
         }
         else if (qtd != 0 && usuarioLogado != pesquisa){
-            System.out.println("\nEste usuário salvou " + qtd + " pedidos.");
-            System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
             LimpaTela();
+            System.out.println("\nEste usuário salvou " + qtd + " pedido/s.");
+            System.out.println(auxLista.getListaPedidosFuncToString(auxLista.buscaPorMatricula(matricula)));
             if(usuarioLogado.isAdm() == false)System.out.println("\nVoce nao pode modificar os pedidos de outros usuarios, apenas pode ve-los. Digite qualquer coisa para sair.");
             else {
                 System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
@@ -740,10 +770,10 @@ public class Menu{
                 }
             }
         }
-        else if (qtd == 0 && usuarioLogado == pesquisa){ LimpaTela(); System.out.print("\nNenhum pedido cadastrado, digite 0 para retornar: "); in.nextInt();}
-        else if (qtd != 0 && usuarioLogado == pesquisa){
+        else if (qtd == 0 && usuarioLogado == pesquisa){ LimpaTela(); System.out.print("\nNenhum pedido cadastrado, digite 0 para retornar: "); in.nextInt();}//VERIFICADO
+        else if (qtd != 0 && usuarioLogado == pesquisa){ //verificado para funcionario
             LimpaTela();
-            System.out.println("\nVoce salvou " + qtd + " pedidos.");
+            System.out.println("\nVoce salvou " + qtd + " pedido/s.");
             System.out.println(auxLista.getListaPedidosFuncToString(usuarioLogado));
             System.out.print("\nDigite o numero do ID do produto ou -1 para retornar: ");
             int opcao = in.nextInt();

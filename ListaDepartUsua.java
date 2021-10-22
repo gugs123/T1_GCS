@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class ListaDepartUsua {
+
     //Tal classe guarda todos as informacoes sobre Departamento, Usuario e PedidoAquisicao nesses Arraylists
     private ArrayList<Departamento> listaDepartamentos;
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<PedidoAquisicao> listaPedidoAquisicao;
+
     public ListaDepartUsua() {
       this.listaUsuarios = new ArrayList<>(15);
        preencheUsuarios();
@@ -220,6 +222,8 @@ return aux;
         for(int i = 0; i < this.getListaPedidoAquisicaoSize(); i++){
             if(getPedidoAquisicao(i).getUsuarioSolicitante() == usuarioLogado){
                 PedidoAquisicao teste = getPedidoAquisicao(i);
+                teste.setIdPedido(i);
+
                 lista += "\nNUMERO ID: "; lista += i;
                 lista += ". Solicitacao no dia "; lista += teste.getDataDoPedido();
                 lista += " por "; lista += teste.getUsuarioSolicitante().getNome(); lista += " "; lista += teste.getUsuarioSolicitante().getInicialSobrenome();
