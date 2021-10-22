@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.stream.Stream;
 import java.util.Scanner;
 
@@ -122,6 +123,7 @@ public class ListaDepartUsua {
     public void cadastraUsuario(){//nome, sobrenome, matricula, adm, departamento
         Scanner in = new Scanner(System.in);
         String departamento = "";
+        int matricula = 0;
         String novaMatricula = "";
         boolean adm = false;
         System.out.println("Insira o primeiro nome do novo usuario: ");
@@ -130,9 +132,20 @@ public class ListaDepartUsua {
         String sobrenome = in.nextLine();
         Usuario userValidacao = null;
         do{
-        
-            System.out.println("Insira a matricula do novo usuario: ");
-            novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
+            boolean quebraloop = true;
+            do{
+                try{
+                    //String faznada = in.nextLine();
+                    System.out.println("Insira a matricula do novo usuario: ");
+                    novaMatricula = Integer.toString(Integer.parseInt(in.nextLine()));
+                    //faznada = in.nextLine();
+                    quebraloop = true;
+                }catch(NumberFormatException err){
+                    System.out.println("Erro! A matricula digitada nao e valida. Tente novamente!");
+                    quebraloop = false;
+                }
+            }while(quebraloop == false);
+            //novaMatricula = in.nextLine();// fazer validacao para nao repetir matricula
             
             for(int i = 0; i < listaUsuarios.size(); i++){
                 userValidacao = listaUsuarios.get(i);
