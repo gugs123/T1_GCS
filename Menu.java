@@ -291,6 +291,7 @@ public class Menu{
             {
                 LimpaTela();
                 System.out.println("\nMenu Admimistrador");
+                System.out.println("0- Cadastrar um novo usuario");
                 System.out.println("1- Avaliar pedido em aberto");
                 System.out.println("2- Estatistica de pedidos totais");
                 System.out.println("3- Numero de pedidos dos ultimos 30 dias e seu valor medio");            
@@ -302,6 +303,10 @@ public class Menu{
                 String opcao = in.nextLine();
                 switch(opcao)
                 {
+                    case "0": {
+                        auxLista.cadastraUsuario();
+                        break;
+                    }
                     case "1": {
                         buscaPorStatus(usuarioLogado, in, 1, auxLista);
                         break;
@@ -335,6 +340,7 @@ public class Menu{
                         LimpaTela();
                         System.out.println("Opção inválida !");
                         in.nextLine();
+                        break;
                     }
                 }
             }
