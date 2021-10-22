@@ -214,9 +214,9 @@ public class ListaDepartUsua {
         int matricula = 0;
         String novaMatricula = "";
         boolean adm = false;
-        System.out.println("Insira o primeiro nome do novo usuario: ");
+        System.out.print("Insira o primeiro nome do novo usuario: ");
         String nome = in.nextLine();
-        System.out.println("Insira o sobrenome do novo usuario: ");
+        System.out.print("Insira o sobrenome do novo usuario: ");
         String sobrenome = in.nextLine();
         Usuario userValidacao = null;
         do{
@@ -224,11 +224,12 @@ public class ListaDepartUsua {
             do{
                 try{
                     //String faznada = in.nextLine();
-                    System.out.println("Insira a matricula do novo usuario: ");
+                    System.out.print("Insira a matricula do novo usuario: ");
                     novaMatricula = Integer.toString(Integer.parseInt(in.nextLine()));
                     //faznada = in.nextLine();
                     quebraloop = true;
                 }catch(NumberFormatException err){
+                    LimpaTela();
                     System.out.println("Erro! A matricula digitada nao e valida. Tente novamente!");
                     quebraloop = false;
                 }
@@ -281,7 +282,7 @@ public class ListaDepartUsua {
                 case "3":{departamento = "Manutencao"; quebraloop = true; break;}
                 case "4":{departamento = "Engenharia"; quebraloop = true; break;}
                 case "5":{departamento = "TI"; quebraloop = true; break;}
-                default: {System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
+                default: {LimpaTela(); System.out.println("Opcao invalida, pressione ENTER para continuar");in.nextLine();}
             }
 
         }while(!quebraloop);
